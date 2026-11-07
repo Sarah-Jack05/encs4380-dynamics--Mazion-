@@ -40,7 +40,7 @@ def calculate_error_fraction(tau,t):
     return np.exp(-np.asarray(t) / tau)
 
 #====================================
-#Module 2: Second-Order Time Response
+#Module 2: First-Order Time Response
 #====================================
 
 def calculate_amplitude_ratio(omega, tau):

@@ -1,1 +1,146 @@
+/* ===== SECTION BOX ===== */
+section {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  scroll-margin-top: 16px;   /* nice stop position when a link jumps here */
+}
+section h2 { margin-top: 0; }
 
+/* ===== PREDICT, THEN CHECK ===== */
+.predict_check_box {
+  background-color: #f5f0ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 60px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: inherit;
+}
+summary {
+  cursor: pointer;
+  color: blueviolet;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* ===== GRAPH + VALUES LAYOUT ===== */
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;   /* graph is twice as wide as the panel */
+  gap: 16px;
+}
+.graph_row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.graph_box {
+  min-height: 320px;
+  background-color: #f9fafc;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+.graph_box.wide { margin-top: 16px; }
+
+.side_list,
+.calculator,
+.state_space {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+}
+.calculator, .state_space { margin-top: 16px; }
+.side_list h3,
+.calculator h3,
+.state_space h3 { margin-top: 0; }
+.side_list span,
+.calculator span,
+.state_space span,
+.result span {
+  font-weight: bold;
+  color: blueviolet;
+}
+
+/* ===== SLIDERS ===== */
+.sliders {
+  display: grid;
+  grid-template-columns: auto 1fr;  /* label | slider */
+  gap: 12px 16px;
+  align-items: center;
+  margin-top: 16px;
+}
+input[type="range"] { width: 100%; }
+input[type="number"] {
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 140px;
+}
+.input_type {
+  grid-column: 1 / -1;     /* radio buttons take the full row */
+  display: flex;
+  gap: 24px;
+}
+
+/* ===== MODULE 3: STATE SPACE MATRICES ===== */
+.ss_row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.matrix {
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  border-radius: 6px;
+  text-align: center;
+}
+.matrix td { padding: 4px 12px; }
+
+/* ===== MODULE 4 ===== */
+.hint { margin-top: 16px; }
+.result {
+  background-color: #e8f6ec;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.score { font-weight: bold; margin-top: 16px; }
+
+/* ===== VALIDATION TABLE ===== */
+.table_wrap { overflow-x: auto; }   /* the table scrolls, the page does not */
+.validation_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.validation_table th,
+.validation_table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+}
+.validation_table th { background-color: #f5f0ff; }
+
+/* ===== BACK LINK ===== */
+.back {
+  display: inline-block;
+  margin-top: 16px;
+}
+
+/* ===== PHONE ===== */
+@media screen and (max-width: 768px) {
+  .container,
+  .graph_row { grid-template-columns: 1fr; }
+  .sliders { grid-template-columns: 1fr; }  /* label above slider */
+}

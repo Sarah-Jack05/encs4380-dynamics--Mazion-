@@ -1,1 +1,204 @@
+body {
+  background-color: #eef0f6;
+  font-family: sans-serif;
+}
+article,
+section {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
+}
+small {
+  background-color: #eef0f6;
+  color: blueviolet;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+a {
+  color: blueviolet;
+  text-decoration: none;
+  font-weight: 400;
+}
+li {
+  margin-bottom: 8px;
+}
+.equation {
+  background-color: #eef0f6;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  min-height: 50px;
+}
+a:hover {
+  color: white;
+  background-color: blueviolet;
+  padding: 4px;
+  border-radius: 6px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  gap: 24px;
+}
 
+/* simulator sections */
+section {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+}
+.predict_check_box {
+  background-color: #f5f0ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 60px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: inherit;
+}
+summary {
+  cursor: pointer;
+  color: blueviolet;
+  font-weight: bold;
+  margin-top: 8px;
+}
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+.graph_box {
+  min-height: 320px;
+  background-color: #f9fafc;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+.side_list {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+}
+.side_list h3 {
+  margin-top: 0;
+}
+.side_list span {
+  font-weight: bold;
+  color: blueviolet;
+}
+.sliders {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px 16px;
+  align-items: center;
+  margin-top: 16px;
+}
+.input_type {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 24px;
+}
+/* ===== Module 2 ===== */
+/* the Bode plot sits alone under the first graph */
+.graph_box.wide {
+  margin-top: 16px;
+}
+/* calculator and state-space panel share the same bordered look */
+.calculator,
+.state_space {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.calculator h3,
+.state_space h3 {
+  margin-top: 0;
+}
+.calculator span,
+.state_space span {
+  font-weight: bold;
+  color: blueviolet;
+}
+input[type="number"] {
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* ===== Module 3 ===== */
+/* two equal graphs side by side (s-plane and phase plane) */
+.graph_row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+/* A, B, C shown in a row */
+.ss_row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+/* matrix look: only left and right brackets */
+.matrix {
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  border-radius: 6px;
+  text-align: center;
+}
+.matrix td {
+  padding: 4px 12px;
+}
+
+/* ===== Module 4 ===== */
+button {
+  background-color: blueviolet;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button:hover {
+  opacity: 0.85;
+}
+.hint {
+  margin-top: 16px;
+}
+/* green reveal box */
+.result {
+  background-color: #e8f6ec;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+.score {
+  font-weight: bold;
+  margin-top: 16px;
+}
+/* IMPORTANT: without this line, .result's own styling can
+   show the box even when it has the hidden attribute */
+[hidden] {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  .cards,
+  .container,
+  .graph_row {
+    grid-template-columns: 1fr;
+  }
+}

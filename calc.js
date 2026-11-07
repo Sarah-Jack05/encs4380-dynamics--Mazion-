@@ -1,72 +1,118 @@
 
-let pyodide;
-let pythonReady;
+// calc.js
+let pyodide = null;
+let pythonReady = null;
 
+// Initialize Python and load calculations.py
 async function initializePython() {
-  pyodide = await loadPyodide();
+    if (pythonReady) return pythonReady;
 
-  const response = await fetch("./calculations.py");
-  if (!response.ok) {
-    throw new Error("Could not load calculations.py");
-  }
+    pythonReady = (async () => {
+        pyodide = await loadPyodide();
 
-  const pythonCode = await response.text();
-  await pyodide.runPythonAsync(pythonCode);
+        // NumPy is required by calculations.py
+        await pyodide.loadPackage("numpy");
 
-  console.log("Python calculations loaded successfully.");
-  return true;
+        const response = await fetch("./calculations.py");
+        if (!response.ok) {
+            throw new Error("Could not load calculations.py");
+        }
+
+        const pythonCode = await response.text();
+        await pyodide.runPythonAsync(pythonCode);
+
+        // Convert NumPy arrays and values into JSON-safe results
+        await pyodide.runPythonAsync(`
+import json
+import numpy as np
+
+def _json_call(function_name, args_json):
+    args = json.loads(args_json)
+    result = globals()[function_name](*args)
+
+    def convert(value):
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+        if isinstance(value, np.generic):
+            return value.item()
+        if isinstance(value, (tuple, list)):
+            return [convert(item) for item in value]
+        return value
+
+    return json.dumps(convert(result))
+`);
+
+        console.log("Python calculations are ready.");
+        return pyodide;
+    })();
+
+    return pythonReady;
 }
 
-pythonReady = initializePython();
+// Run a Python function and return a normal JavaScript value
+async function callPython(functionName, args = []) {
+    await initializePython();
 
-async function callPython(functionName, ...args) {
-  await pythonReady;
+    const result = await pyodide.runPythonAsync(
+        `_json_call(${JSON.stringify(functionName)}, ${JSON.stringify(JSON.stringify(args))})`
+    );
 
-  const pyArgs = args
-    .map(value => JSON.stringify(value))
-    .join(", ");
-
-  const result = await pyodide.runPythonAsync(
-    `${functionName}(${pyArgs})`
-  );
-
-  return result.toJs
-    ? result.toJs({ dict_converter: Object.fromEntries })
-    : result;
+    return JSON.parse(result);
 }
 
-window.pythonCalc = {
-  stepResponse: (K, tau, t, A = 1) =>
-    callPython("calculate_step_response", K, tau, t, A),
+// MODULE 1
+async function calcStepResponse(K, tau, t, A = 1) {
+    return callPython("calculate_step_response", [K, tau, t, A]);
+}
 
-  rampResponse: (K, tau, t, A = 1) =>
-    callPython("calculate_ramp_response", K, tau, t, A),
+async function calcRampResponse(K, tau, t, A = 1) {
+    return callPython("calculate_ramp_response", [K, tau, t, A]);
+}
 
-  importantPoints: (K, tau, A = 1) =>
-    callPython("calculate_important_points", K, tau, A),
+async function calcImportantPoints(K, tau, A = 1) {
+    return callPython("calculate_important_points", [K, tau, A]);
+}
 
-  rampLag: tau =>
-    callPython("calculate_ramp_lag", tau),
+async function calcRampLag(tau) {
+    return callPython("calculate_ramp_lag", [tau]);
+}
 
-  steadyStateError: (K, tau, A = 1) =>
-    callPython("calculate_steady_state_error", K, tau, A),
+async function calcSteadyStateError(K, tau, A = 1) {
+    return callPython("calculate_steady_state_error", [K, tau, A]);
+}
 
-  errorFraction: (tau, t) =>
-    callPython("calculate_error_fraction", tau, t),
+async function calcErrorFraction(tau, t) {
+    return callPython("calculate_error_fraction", [tau, t]);
+}
 
-  amplitudeRatio: (omega, tau) =>
-    callPython("calculate_amplitude_ratio", omega, tau),
+// MODULE 2
+async function calcAmplitudeRatio(omega, tau) {
+    return callPython("calculate_amplitude_ratio", [omega, tau]);
+}
 
-  phaseLag: (omega, tau) =>
-    callPython("calculate_phase_lag", omega, tau),
+async function calcPhaseLag(omega, tau) {
+    return callPython("calculate_phase_lag", [omega, tau]);
+}
 
-  outputAmplitude: (tau, omega, A = 1) =>
-    callPython("calculate_output_amplitude", tau, omega, A),
+async function calcOutputAmplitude(tau, omega, A = 1) {
+    return callPython("calculate_output_amplitude", [tau, omega, A]);
+}
 
-  cutoffFrequency: tau =>
-    callPython("calculate_cutoff_frequency", tau),
+async function calcCutoffFrequency(tau) {
+    return callPython("calculate_cutoff_frequency", [tau]);
+}
 
-  dynamicError: (tau, omega) =>
-    callPython("calculate_dynamic_error", tau, omega)
-};
+async function calcDynamicError(tau, omega) {
+    return callPython("calculate_dynamic_error", [tau, omega]);
+}
 
+// Compatibility aliases for the existing interface
+async function calcFrequency(tau, omega) {
+    const [M, phase, cutoff] = await Promise.all([
+        calcAmplitudeRatio(omega, tau),
+        calcPhaseLag(omega, tau),
+        calcCutoffFrequency(tau)
+    ]);
+
+    return { M, phase, cutoff };
+}

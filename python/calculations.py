@@ -38,3 +38,32 @@ def calculate_error_fraction(tau,t):
     if tau <= 0:
         raise ValueError("Time constant must be positive")
     return np.exp(-np.asarray(t) / tau)
+
+#====================================
+#Module 2: Second-Order Time Response
+#====================================
+
+def calculate_amplitude_ratio(omega,tau):
+    if tau <= 0:
+        raise ValueError("Time constant must be positive")
+    
+    return (1/np.sqrt(1 + np.pow((omega * tau),2)) )
+
+
+def calculate_phase_lag(omega,tau):
+    if tau <= 0:
+        raise ValueError("Time constant must be positive")
+    
+    return np.degrees(-np.arctan(omega*tau))
+
+def calculate_output_amplitude(tau,omega,A=1.0):    
+    return (A*calculate_amplitude_ratio(omega,tau))
+
+def calculate_cutoff_frequency(tau):
+    if tau <= 0:
+        raise ValueError("Time constant must be positive")
+    return (1/tau)
+
+def calculate_dynamic_error(tau,omega):
+    return (calculate_amplitude_ratio(omega,tau)-1)
+

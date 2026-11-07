@@ -47,114 +47,77 @@ Omayma Altaweel 			1230099
       </nav>
     </header>
 
+    <!-- ============ THE 4 MODULE CARDS ============ -->
     <main class="cards">
       <article>
-        <header>
-          <small>Module 1</small>
-        </header>
-
-        <h2>First-Order System</h2>
-        <div class="equation">
-          $$\tau \dot{y} + y = Kx$$ $$G(s) = \frac{K}{\tau s + 1}$$
-        </div>
-
+        <header><small>Module 1</small></header>
+        <h2>First-Order Time Response</h2>
+        <div class="equation">$$\tau \dot{y} + y = Kx$$ $$G(s) = \frac{K}{\tau s + 1}$$</div>
         <ul>
           <li>$x$: input (the tea temperature)</li>
           <li>$y$: output (the thermometer reading)</li>
           <li>$K$: steady-state gain (how much $y$ ends up per unit of $x$)</li>
-          <li>
-            $\tau$: time constant (time to reach 63.2% of the final change)
-          </li>
+          <li>$\tau$: time constant (time to reach 63.2% of the final change)</li>
         </ul>
-        <footer>
-          <a href="#module1">Launch Simulator ➔</a>
-        </footer>
+        <footer><a href="#module1">Launch Simulator ➔</a></footer>
       </article>
+
       <article>
-        <header>
-          <small>Module 2</small>
-        </header>
-
+        <header><small>Module 2</small></header>
         <h2>First-Order Frequency Response</h2>
-        <div class="equation">
-          $M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$, $\phi =
-          -\tan^{-1}(\omega\tau)$
-        </div>
-
+        <div class="equation">$M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$, $\phi = -\tan^{-1}(\omega\tau)$</div>
         <ul>
           <li>$M$: amplitude ratio</li>
           <li>$\phi$: phase lag</li>
           <li>$\omega$: input frequency</li>
           <li>$\tau$: time constant</li>
         </ul>
-        <footer>
-          <a href="#module2">Launch Simulator ➔</a>
-        </footer>
+        <footer><a href="#module2">Launch Simulator ➔</a></footer>
       </article>
+
       <article>
-        <header>
-          <small>Module 3</small>
-        </header>
-
+        <header><small>Module 3</small></header>
         <h2>Second-Order Response</h2>
-        <div class="equation">
-          $G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$
-        </div>
-
+        <div class="equation">$G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$</div>
         <ul>
           <li>$\zeta$: damping ratio</li>
           <li>$\omega_n$: natural frequency</li>
           <li>$K$: gain</li>
         </ul>
-        <footer>
-          <a href="#module3">Launch Simulator ➔</a>
-        </footer>
+        <footer><a href="#module3">Launch Simulator ➔</a></footer>
       </article>
+
       <article>
-        <header>
-          <small>Module 4</small>
-        </header>
-
+        <header><small>Module 4</small></header>
         <h2>Guess the Sensor</h2>
-        <div class="equation">
-          no new equation: it uses the models of modules 1 and 3
-        </div>
-
+        <div class="equation">Uses the models of modules 1 and 3</div>
         <ul>
           <li>hidden $\tau$ (first-order sensor)</li>
-          <li>hidden $\zeta$ (damping ratio, second-order sensor)</li>
-          <li>hidden $\omega_n$ (natural frequency, second-order sensor)</li>
+          <li>hidden $\zeta$ (second-order sensor)</li>
+          <li>hidden $\omega_n$ (second-order sensor)</li>
         </ul>
-        <footer>
-          <a href="#module4">Launch Simulator ➔</a>
-        </footer>
+        <footer><a href="#module4">Launch Simulator ➔</a></footer>
       </article>
     </main>
+    <!-- ================= MODULE 1: FIRST-ORDER TIME RESPONSE ================= -->
     <section id="module1">
       <h2>Module 1: First-Order Time Response</h2>
 
+      <!-- Predict, then check -->
       <div class="predict_check_box">
-        <p>
-          <strong>Predict, then check:</strong> if you double τ, what happens to
-          the time the sensor needs to reach 63.2%?
-        </p>
-        <textarea
-          id="predict"
-          placeholder="Write your prediction here"
-        ></textarea>
+        <p><strong>Predict, then check:</strong> if you double τ, what happens to the time the sensor needs to reach 63.2%?</p>
+        <textarea id="predict" placeholder="Write your prediction here"></textarea>
         <details>
           <summary>Check</summary>
-          <p>
-            It doubles. The curve reaches 63.2% of its final value at t = τ, so
-            a bigger τ means a slower sensor.
-          </p>
+          <p>It doubles. The curve reaches 63.2% of its final value at t = τ, so a bigger τ means a slower sensor.</p>
         </details>
       </div>
 
+      <!-- main graph (left) + calculated values (right) -->
       <div class="container">
         <div class="graph_box" id="graph1"></div>
         <div class="side_list">
-          <h3>Output Values</h3>
+          <h3>Values</h3>
           <p>y(τ) = <span id="val_tau">–</span></p>
           <p>y(3τ) = <span id="val_3tau">–</span></p>
           <p>Ramp lag = <span id="val_lag">–</span></p>
@@ -162,6 +125,10 @@ Omayma Altaweel 			1230099
         </div>
       </div>
 
+      <!-- error-fraction plot on a log axis -->
+      <div class="graph_box wide" id="graph1_error"></div>
+
+      <!-- sliders and input type -->
       <div class="sliders">
         <label for="k">K: <output id="k_out">1</output></label>
         <input type="range" id="k" min="0.1" max="10" step="0.1" value="1" />
@@ -170,46 +137,30 @@ Omayma Altaweel 			1230099
         <input type="range" id="tau" min="0.1" max="20" step="0.1" value="10" />
 
         <div class="input_type">
-          <label
-            ><input type="radio" name="input" value="step" checked />
-            Step</label
-          >
+          <label><input type="radio" name="input" value="step" checked /> Step</label>
           <label><input type="radio" name="input" value="ramp" /> Ramp</label>
         </div>
       </div>
+      <a class="back" href="#top">↑ Back to modules</a>
     </section>
+
     <!-- ================= MODULE 2: FIRST-ORDER FREQUENCY RESPONSE ================= -->
     <section id="module2">
       <h2>Module 2: First-Order Frequency Response</h2>
 
-      <!-- PART 1: Predict, then check (required in every module) -->
       <div class="predict_check_box">
-        <p>
-          <strong>Predict, then check:</strong> if τ gets bigger and the input
-          frequency stays the same, what happens to the amplitude and to the
-          phase lag?
-        </p>
-        <textarea
-          id="predict2"
-          placeholder="Write your prediction here"
-        ></textarea>
+        <p><strong>Predict, then check:</strong> if τ gets bigger and the input frequency stays the same, what happens to the amplitude and to the phase lag?</p>
+        <textarea id="predict2" placeholder="Write your prediction here"></textarea>
         <details>
           <summary>Check</summary>
-          <p>
-            The amplitude gets smaller and the phase lag gets bigger. Both
-            formulas use ωτ, and a bigger τ makes ωτ bigger. Example: τ = 0.2 s
-            and ω = 2 rad/s give ωτ = 0.4, so the amplitude ratio is 0.93 and
-            the lag is 21.8°.
-          </p>
+          <p>The amplitude gets smaller and the phase lag gets bigger. Both formulas use ωτ, and a bigger τ makes ωτ bigger. Example: τ = 0.2 s and ω = 2 rad/s give an amplitude ratio of 0.93 and a lag of 21.8°.</p>
         </details>
       </div>
 
-      <!-- PART 2: sine graph (left) + calculated values (right) -->
       <div class="container">
         <div class="graph_box" id="graph2_time"></div>
-        <!-- input and output sines on one plot -->
         <div class="side_list">
-          <h3>Output Values</h3>
+          <h3>Values</h3>
           <p>Amplitude ratio M = <span id="val_M">–</span></p>
           <p>Phase lag φ = <span id="val_phase">–</span></p>
           <p>Cutoff ω = 1/τ = <span id="val_cutoff">–</span></p>
@@ -217,74 +168,50 @@ Omayma Altaweel 			1230099
         </div>
       </div>
 
-      <!-- PART 3: Bode plot, full width -->
       <div class="graph_box wide" id="graph2_bode"></div>
 
-      <!-- PART 4: sliders (label + slider pairs) -->
       <div class="sliders">
         <label for="tau2">τ (s): <output id="tau2_out">0.2</output></label>
-        <input
-          type="range"
-          id="tau2"
-          min="0.1"
-          max="10"
-          step="0.1"
-          value="0.2"
-        />
+        <input type="range" id="tau2" min="0.1" max="10" step="0.1" value="0.2" />
 
-        <label for="w2"
-          >Input frequency ω (rad/s): <output id="w2_out">2</output></label
-        >
+        <label for="w2">ω (rad/s): <output id="w2_out">2</output></label>
         <input type="range" id="w2" min="0.1" max="20" step="0.1" value="2" />
       </div>
 
-      <!-- PART 5: dynamic-error calculator (numbers typed by the user) -->
+      <!-- dynamic-error calculator -->
       <div class="calculator">
         <h3>Dynamic-error calculator</h3>
         <div class="sliders">
           <label for="calc_f">Highest signal frequency (Hz)</label>
           <input type="number" id="calc_f" value="100" min="0.1" />
-
           <label for="calc_err">Allowed error (%)</label>
           <input type="number" id="calc_err" value="5" min="0.1" max="50" />
-
           <label for="calc_fphase">Check phase lag at (Hz)</label>
           <input type="number" id="calc_fphase" value="50" min="0.1" />
         </div>
         <p>Largest allowed τ = <span id="calc_taumax">–</span></p>
         <p>Phase lag at that frequency = <span id="calc_phase">–</span></p>
       </div>
+      <a class="back" href="#top">↑ Back to modules</a>
     </section>
 
     <!-- ================= MODULE 3: SECOND-ORDER RESPONSE ================= -->
     <section id="module3">
       <h2>Module 3: Second-Order Response</h2>
 
-      <!-- PART 1: Predict, then check -->
       <div class="predict_check_box">
-        <p>
-          <strong>Predict, then check:</strong> if you lower the damping b, what
-          happens to the overshoot?
-        </p>
-        <textarea
-          id="predict3"
-          placeholder="Write your prediction here"
-        ></textarea>
+        <p><strong>Predict, then check:</strong> if you lower the damping b, what happens to the overshoot?</p>
+        <textarea id="predict3" placeholder="Write your prediction here"></textarea>
         <details>
           <summary>Check</summary>
-          <p>
-            The overshoot grows. Damping ratio is ζ = b / (2√(km)), so a smaller
-            b gives a smaller ζ. With ζ = 0.5 the overshoot is 16.3%, and with ζ
-            = 1 there is none.
-          </p>
+          <p>The overshoot grows. The damping ratio is ζ = b / (2√(km)), so a smaller b gives a smaller ζ. With ζ = 0.5 the overshoot is 16.3%, and with ζ = 1 there is none.</p>
         </details>
       </div>
 
-      <!-- PART 2: step response graph + values read off the curve -->
       <div class="container">
         <div class="graph_box" id="graph3_step"></div>
         <div class="side_list">
-          <h3>Output Values</h3>
+          <h3>Values</h3>
           <p>Damping ratio ζ = <span id="val_zeta">–</span></p>
           <p>Natural frequency ωn = <span id="val_wn">–</span></p>
           <p>Rise time = <span id="val_rise">–</span></p>
@@ -294,89 +221,51 @@ Omayma Altaweel 			1230099
         </div>
       </div>
 
-      <!-- PART 3: two graphs side by side -->
       <div class="graph_row">
         <div class="graph_box" id="graph3_splane"></div>
-        <!-- poles in the s-plane -->
         <div class="graph_box" id="graph3_phase"></div>
-        <!-- phase plane: x1 against x2 -->
       </div>
 
-      <!-- PART 4: sliders (m, b, k) -->
       <div class="sliders">
         <label for="m3">Mass m: <output id="m3_out">1</output></label>
         <input type="range" id="m3" min="0.1" max="10" step="0.1" value="1" />
-
         <label for="b3">Damping b: <output id="b3_out">2</output></label>
         <input type="range" id="b3" min="0" max="10" step="0.1" value="2" />
-
         <label for="k3">Spring k: <output id="k3_out">4</output></label>
         <input type="range" id="k3" min="0.1" max="20" step="0.1" value="4" />
       </div>
 
-      <!-- PART 5: state-space panel. KaTeX only renders once at page load,
-       so the changing numbers use plain table cells, not KaTeX. -->
+      <!-- state-space panel (changing numbers are plain table cells, not KaTeX) -->
       <div class="state_space">
         <h3>State-space form</h3>
-        <p>
-          $x_1 = x$, $x_2 = \dot{x}$, $\dot{\mathbf{x}} = A\mathbf{x} + B F(t)$,
-          $y = C\mathbf{x}$
-        </p>
-
+        <p>$x_1 = x$, $x_2 = \dot{x}$, $\dot{\mathbf{x}} = A\mathbf{x} + B F(t)$, $y = C\mathbf{x}$</p>
         <div class="ss_row">
           <span>A =</span>
           <table class="matrix">
-            <tr>
-              <td>0</td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td id="ss_a21">–</td>
-              <td id="ss_a22">–</td>
-            </tr>
+            <tr><td>0</td><td>1</td></tr>
+            <tr><td id="ss_a21">–</td><td id="ss_a22">–</td></tr>
           </table>
-
           <span>B =</span>
           <table class="matrix">
-            <tr>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td id="ss_b2">–</td>
-            </tr>
+            <tr><td>0</td></tr>
+            <tr><td id="ss_b2">–</td></tr>
           </table>
-
           <span>C =</span>
           <table class="matrix">
-            <tr>
-              <td>1</td>
-              <td>0</td>
-            </tr>
+            <tr><td>1</td><td>0</td></tr>
           </table>
         </div>
-
-        <p>
-          Eigenvalues of A: <span id="ss_eig1">–</span> and
-          <span id="ss_eig2">–</span>
-        </p>
-        <p>
-          Poles of G(s): <span id="ss_pole1">–</span> and
-          <span id="ss_pole2">–</span>
-        </p>
+        <p>Eigenvalues of A: <span id="ss_eig1">–</span> and <span id="ss_eig2">–</span></p>
+        <p>Poles of G(s): <span id="ss_pole1">–</span> and <span id="ss_pole2">–</span></p>
       </div>
+      <a class="back" href="#top">↑ Back to modules</a>
     </section>
 
     <!-- ================= MODULE 4: GUESS THE SENSOR ================= -->
     <section id="module4">
       <h2>Module 4: Guess the Sensor</h2>
-      <p>
-        A hidden sensor is picked at random and a noisy response is drawn. Read
-        the curve, then estimate its parameters. The true values appear only
-        after you submit.
-      </p>
+      <p>A hidden sensor is picked at random and a noisy response is drawn. Read the curve, then estimate its parameters. The true values appear only after you submit.</p>
 
-      <!-- PART 1: the hidden response (left) + the guess form (right).
-       The guess form is the "predict" step of this module. -->
       <div class="container">
         <div class="graph_box" id="graph4"></div>
         <div class="side_list">
@@ -385,26 +274,22 @@ Omayma Altaweel 			1230099
           <div class="sliders">
             <label for="guess_tau">τ (first-order)</label>
             <input type="number" id="guess_tau" step="0.01" min="0" />
-
             <label for="guess_zeta">ζ (second-order)</label>
             <input type="number" id="guess_zeta" step="0.01" min="0" />
-
-            <label for="guess_wn">ωn (second-order, rad/s)</label>
+            <label for="guess_wn">ωn (rad/s)</label>
             <input type="number" id="guess_wn" step="0.01" min="0" />
           </div>
           <button type="button" id="btn_submit">Submit guess</button>
         </div>
       </div>
 
-      <!-- PART 2: hint on request -->
       <details class="hint">
         <summary>Hint</summary>
         <p>First order: at t = τ the curve is at 63.2% of its final value.</p>
         <p>Second order: the overshoot depends only on ζ.</p>
       </details>
 
-      <!-- PART 3: reveal box. "hidden" keeps it invisible until the guess is made.
-       JavaScript removes the hidden attribute later. -->
+      <!-- reveal box: JavaScript removes "hidden" after the guess -->
       <div id="result4" class="result" hidden>
         <h3>True values</h3>
         <p>τ = <span id="true_tau">–</span></p>
@@ -413,10 +298,34 @@ Omayma Altaweel 			1230099
         <p>This round: <span id="score_round">–</span></p>
       </div>
 
-      <!-- PART 4: running score and new round -->
       <p class="score">Session score: <span id="score_total">0</span></p>
       <button type="button" id="btn_new">New sensor</button>
+      <a class="back" href="#top">↑ Back to modules</a>
     </section>
+
+    <!-- ================= VALIDATION CHECKS ================= -->
+    <section id="validation">
+      <h2>Validation checks</h2>
+      <p>Each result is compared with the expected value from the lecture slides.</p>
+      <div class="table_wrap">
+        <table class="validation_table">
+          <thead>
+            <tr><th>#</th><th>Check</th><th>Expected</th><th>Your value</th><th>Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>First-order step</td><td>y(τ) = 0.632 KA and y(3τ) = 0.95 KA</td><td id="v1_mine">–</td><td id="v1_res">–</td></tr>
+            <tr><td>2</td><td>τ = 0.2 s, input sin 2t</td><td>amplitude 0.93, lag 21.8°</td><td id="v2_mine">–</td><td id="v2_res">–</td></tr>
+            <tr><td>3</td><td>100 Hz signals, at most 5% error</td><td>τmax ≈ 0.52 ms, lag 9.3° at 50 Hz</td><td id="v3_mine">–</td><td id="v3_res">–</td></tr>
+            <tr><td>4</td><td>Second order, ζ = 0.5</td><td>overshoot = 16.3%</td><td id="v4_mine">–</td><td id="v4_res">–</td></tr>
+            <tr><td>5</td><td>Second order, ζ = 1</td><td>no overshoot</td><td id="v5_mine">–</td><td id="v5_res">–</td></tr>
+            <tr><td>6</td><td>State space, m = 1, b = 2, k = 4</td><td>eigenvalues of A = −1 ± j1.732 = poles</td><td id="v6_mine">–</td><td id="v6_res">–</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="back" href="#top">↑ Back to modules</a>
+    </section>
+
+    <footer class="page_footer">ENCS4380 Interfacing Techniques, Homework 1</footer>
   </body>
 </html>
 

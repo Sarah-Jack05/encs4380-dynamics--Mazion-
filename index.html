@@ -10,7 +10,11 @@ Omayma Altaweel 			1230099
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HW1</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="modules.css" />
+    <link rel="JavaScript" href="calc.js">
+    <link rel="JavaScript" href="plot.js">
+    <link rel="JavaScript" href="ui.js">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
@@ -408,29 +412,6 @@ Omayma Altaweel 			1230099
       <p class="score">Session score: <span id="score_total">0</span></p>
       <button type="button" id="btn_new">New sensor</button>
     </section>
-    <!--------------------------------JAVA SCRIPT------------------------------------>
-    <script>
-      // 1. grab the 4 elements
-      const kSlider = document.getElementById("k");
-      const kOut = document.getElementById("k_out");
-      const tSlider = document.getElementById("tau");
-      const tOut = document.getElementById("tau_out");
-
-      // 2. ONE function that does both jobs
-      function update() {
-        const k = Number(kSlider.value);
-        const t = Number(tSlider.value);
-        kOut.textContent = k;
-        tOut.textContent = t;
-      }
-
-      // 3. run it when EITHER slider moves
-      kSlider.addEventListener("input", update);
-      tSlider.addEventListener("input", update);
-
-      // 4. run it once at the start
-      update();
-    </script>
   </body>
 </html>
 

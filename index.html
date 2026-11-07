@@ -10,38 +10,43 @@ Omayma Altaweel 			1230099
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynamic Characteristics Toolkit</title>
+    <!-- our own CSS: base = page and cards, modules = simulators -->
     <link rel="stylesheet" href="base.css" />
     <link rel="stylesheet" href="modules.css" />
-    <link rel="JavaScript" href="calc.js">
-    <link rel="JavaScript" href="plot.js">
-    <link rel="JavaScript" href="ui.js">
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-    />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
-    ></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
-    ></script>
+    <!-- KaTeX (math display) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         renderMathInElement(document.body, {
           delimiters: [
             { left: "$$", right: "$$", display: true },
             { left: "$", right: "$", display: false },
-            { left: "\\(", right: "\\)", display: false },
-            { left: "\\[", right: "\\]", display: true },
           ],
           throwOnError: false,
         });
       });
     </script>
+    <!-- javascript -->
+    <link rel="JavaScript" href="calc.js">
+    <link rel="JavaScript" href="plot.js">
+    <link rel="JavaScript" href="ui.js">
   </head>
   <body>
+    <!-- ============ PAGE HEADER + NAVIGATION ============ -->
+        <header class="page_header" id="top">
+      <h1>Dynamic Characteristics Toolkit</h1>
+      <p>ENCS4380 Homework 1: see how a sensor reports the past, smoothed.</p>
+      <nav>
+        <a href="#module1">Module 1</a>
+        <a href="#module2">Module 2</a>
+        <a href="#module3">Module 3</a>
+        <a href="#module4">Module 4</a>
+        <a href="#validation">Validation</a>
+      </nav>
+    </header>
+
     <main class="cards">
       <article>
         <header>

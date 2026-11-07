@@ -43,11 +43,11 @@ def calculate_error_fraction(tau,t):
 #Module 2: Second-Order Time Response
 #====================================
 
-def calculate_amplitude_ratio(omega,tau):
+def calculate_amplitude_ratio(omega, tau):
     if tau <= 0:
         raise ValueError("Time constant must be positive")
-    
-    return (1/np.sqrt(1 + np.pow((omega * tau),2)) )
+
+    return 1 / np.sqrt(1 + (omega * tau)**2)
 
 
 def calculate_phase_lag(omega,tau):

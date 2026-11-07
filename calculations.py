@@ -67,3 +67,55 @@ def calculate_cutoff_frequency(tau):
 def calculate_dynamic_error(tau,omega):
     return (calculate_amplitude_ratio(omega,tau)-1)
 
+#====================================
+#Module 3: Second-Order Time Response
+#====================================
+def calculate_damping_type(zeta):
+    if zeta <= 0:
+        raise ValueError("Damping Ratio must be positive")
+    if (zeta < 1):
+        return "Underdamped"
+    elif (zeta == 1):
+        return "Critically Damped"
+    else: return "Overdamped"
+
+def calculate_overshoot(zeta):
+    if (calculate_damping_type(zeta) == "Underdamped"):
+        return (np.exp((-np.pi*zeta)/np.sqrt(1-(zeta**2)))*100)
+    return 0
+
+
+def calculate_second_order_step_response(K, zeta, omega_n, t, A=1.0):
+    if zeta <= 0:
+        raise ValueError("Damping Ratio must be positive")
+    if omega_n <= 0:
+        raise ValueError("Natural Frequency must be positive")
+
+    t = np.asarray(t)
+
+    if zeta < 1:
+        omega_d = omega_n * np.sqrt(1 - zeta**2)
+
+        return K * A * (
+            1 - np.exp(-zeta * omega_n * t) * (
+                np.cos(omega_d * t) +
+                (zeta / np.sqrt(1 - zeta**2)) * np.sin(omega_d * t)
+            )
+        )
+
+    elif zeta == 1:
+        return K * A * (
+            1 - np.exp(-omega_n * t) * (1 + omega_n * t)
+        )
+
+    else:
+        alpha = np.sqrt(zeta**2 - 1)
+
+        return K * A * (
+            1 - (
+                (zeta + alpha) * np.exp(-omega_n * (zeta - alpha) * t)
+                - (zeta - alpha) * np.exp(-omega_n * (zeta + alpha) * t)
+            ) / (2 * alpha)
+        )
+
+

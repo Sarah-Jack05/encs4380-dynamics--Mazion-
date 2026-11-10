@@ -1,5 +1,4 @@
 # encs4380-dynamics--Mazion-
-# encs4380-dynamics--Mazion-
 
 Dynamic Characteristics Interactive Toolkit — ENCS4380 Interfacing Techniques, Birzeit University (Homework 1, Dr. Wasel Ghanem).
 

@@ -260,5 +260,181 @@ def calculate_phase_plane(m, b, k, t, F=1.0):
 
     return x1, x2
 
+#===========================
+#Module 4: Guess the sensor
+#===========================
+def generate_random_sensor():
+    sensor_type = np.random.choice(["first_order", "second_order"])
+    if sensor_type == "first_order":
+        K = np.random.uniform(1, 5)
+        tau = np.random.uniform(0.5, 5)
+
+        return {
+            "type": sensor_type,
+            "K": K,
+            "tau": tau
+        }
+    elif sensor_type == "second_order":
+        damping_type = np.random.choice([
+            "underdamped",
+            "critically_damped",
+            "overdamped"
+        ])
+        if damping_type == "underdamped":
+            zeta = np.random.uniform(0.2, 1)
+
+        elif damping_type == "critically_damped":
+            zeta = 1.0
+
+        else:
+            zeta = np.random.uniform(1, 2)
+
+        omega_n = np.random.uniform(1, 10)
+        return {
+            "type": sensor_type,
+            "damping_type": damping_type,
+            "zeta": zeta,
+            "omega_n": omega_n
+        }
 
 
+def generate_true_response(sensor, t, A=1.0, input_type="step", frequency=1.0):
+
+    if sensor["type"] == "first_order":
+
+        if input_type == "step":
+            return calculate_step_response(
+                sensor["K"], sensor["tau"], t, A
+            )
+
+        elif input_type == "sine":
+            omega = 2 * np.pi * frequency
+
+            M = 1 / np.sqrt(1 + (omega * sensor["tau"])**2)
+
+            phi = np.arctan(omega * sensor["tau"])
+
+            return sensor["K"] * A * M * np.sin(omega * t - phi)
+
+        else:
+            raise ValueError("Invalid input type")
+
+    elif sensor["type"] == "second_order":
+
+        return calculate_second_order_step_response(
+            1.0, sensor["zeta"], sensor["omega_n"], t, A
+        )
+
+    else:
+        raise ValueError("Invalid sensor type")
+
+
+
+def add_noise(response, noise_level=0.02):
+    noise = np.random.normal(
+        0,
+        noise_level * np.max(np.abs(response)),
+        size=np.asarray(response).shape
+    )
+
+    return response + noise
+
+def calculate_guess_error(true_value, guessed_value):
+    if true_value == 0:
+        raise ValueError("True value cannot be zero")
+
+    return (abs(true_value - guessed_value) / abs(true_value)) * 100
+
+def calculate_score(errors):
+    score = 0
+
+    for error in errors.values():
+        if error <= 10:
+            score += 50
+
+    return score
+
+def evaluate_guess(sensor, guessed_parameters):
+
+    if sensor["type"] == "first_order":
+
+        errors = {
+            "K": calculate_guess_error(
+                sensor["K"], guessed_parameters["K"]
+            ),
+
+            "tau": calculate_guess_error(
+                sensor["tau"], guessed_parameters["tau"]
+            )
+        }
+
+    elif sensor["type"] == "second_order":
+
+        errors = {
+            "zeta": calculate_guess_error(
+                sensor["zeta"], guessed_parameters["zeta"]
+            ),
+
+            "omega_n": calculate_guess_error(
+                sensor["omega_n"], guessed_parameters["omega_n"]
+            )
+        }
+
+    else:
+        raise ValueError("Invalid sensor type")
+
+    score = calculate_score(errors)
+
+    return errors, score
+
+def update_running_score(total_score, rounds, new_score):
+
+    total_score += new_score
+    rounds += 1
+
+    average_score = total_score / rounds
+
+    return total_score, rounds, average_score
+
+def generate_new_round(duration=10, points=100, noise_level=0.02):
+
+    sensor = generate_random_sensor()
+
+    input_type = "step"
+    frequency = None
+
+    if sensor["type"] == "first_order":
+        input_type = np.random.choice(["step", "sine"])
+
+        if input_type == "sine":
+            frequency = np.random.uniform(0.1, 2)
+
+    t = np.linspace(0, duration, points)
+
+    true_response = generate_true_response(
+        sensor, t,
+        input_type=input_type,
+        frequency=frequency if frequency is not None else 1.0
+    )
+
+    noisy_response = add_noise(true_response, noise_level)
+
+    return sensor, t, true_response, noisy_response, input_type, frequency
+
+
+def generate_hint(sensor, input_type="step"):
+
+    if sensor["type"] == "first_order":
+
+        if input_type == "step":
+            return "At t = tau, the response reaches 63.2% of its final value."
+
+        elif input_type == "sine":
+            return "Amplitude ratio and phase lag depend on omega and tau."
+
+    elif sensor["type"] == "second_order":
+
+        return "Overshoot depends only on zeta, while peak time depends on zeta and omega_n."
+
+    else:
+        raise ValueError("Invalid sensor type")

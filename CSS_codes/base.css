@@ -22,7 +22,7 @@ nav ul {
 }
 
 
-/************************** 4 Cards Starts ***************************/
+/********************************** 4 Cards Starts ***************************/
 .cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -37,4 +37,44 @@ nav ul {
   padding: 24px;
   box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
 }
-/************************** 4 Cards Ends  ***************************/
+
+.cards small {
+    background-color: #eef0f6;
+    color: blueviolet;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+/**** equation **************/
+.equation {
+    background-color: #eef0f6;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 50px;
+    /* padding: 8px; */
+    /* margin: 16px 0; */
+    overflow-x: auto; /* scroll if equation is wider than box */
+}
+/****** ul list and simulation link*****************/
+.cards li {
+    margin-bottom: 8px;
+}
+a {
+    color: blueviolet;
+    text-decoration: none;
+}
+a:hover {
+    color: white;
+    background-color: blueviolet;
+    border-radius: 6px;
+    padding: 1px 5px;
+}
+/**************** phone layout ******************/
+@media screen and (max-width: 768px) {/* screen is 768 or norrower */
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+/***************************************** 4 Cards Ends  ********************************/

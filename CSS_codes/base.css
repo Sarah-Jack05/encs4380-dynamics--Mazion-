@@ -1,3 +1,12 @@
+/*
+Sarah Abd Al-Muhsen	 	1230170
+Beesan Abutouq 			  1230819
+Omayma Altaweel 			1230099
+*/
+
+[hidden] { display: none !important; }
+
+
 body {
     background-color: #eef0f6;/*light grey-blue*/
     font-family: system-ui, sans-serif; 
@@ -20,7 +29,6 @@ nav ul {
     list-style: none;
     padding: 0;
 }
-
 
 /********************************** 4 Cards Starts ***************************/
 .cards {

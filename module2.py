@@ -70,7 +70,7 @@ def update_module2(event=None):
     x = A * np.sin(omega * t)
     y = A_out * np.sin(omega * t + phi_rad)
 
-    fig1, ax1 = plt.subplots(figsize=(8, 4))
+    fig1, ax1 = plt.subplots(figsize=(6.5, 4))
     ax1.plot(t, x, "--", label="Input x(t)", color="gray")
     ax1.plot(t, y, linewidth=2.5, label="Output y(t)", color="blue")
     ax1.set_xlabel("Time (s)")
@@ -90,7 +90,7 @@ def update_module2(event=None):
     M_values = calculate_amplitude_ratio(omega_values, tau)
     phase_values = calculate_phase_lag(omega_values, tau)
 
-    fig2, (ax_mag, ax_phase) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+    fig2, (ax_mag, ax_phase) = plt.subplots(2, 1, figsize=(6.5, 4), sharex=True)
 
     # Magnitude subplot
     ax_mag.semilogx(omega_values, 20 * np.log10(M_values), linewidth=2, label="Magnitude")

@@ -107,7 +107,7 @@ input[type="number"] {
 #plot1_error *, 
 #plot2 *, 
 #bode * {
-  max-width: 100% !important;
+  width: 100% !important;
   height: auto !important;
   box-sizing: border-box !important;
 }

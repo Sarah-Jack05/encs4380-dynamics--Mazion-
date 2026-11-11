@@ -22,8 +22,14 @@ id    for connecting Python
       href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
     />
     <!--load this file, but run it after the page is read-->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    ></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         renderMathInElement(document.body, {
@@ -36,158 +42,267 @@ id    for connecting Python
       });
     </script>
     <!--link python-->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2026.7.1/core.css" /><!--core.css is the style for PyScript’s own parts.-->
-    <script type="module" src="https://pyscript.net/releases/2026.7.1/core.js"></script><!--core.js is the engine that downloads Python into the page.-->
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2026.7.1/core.css"
+    />
+    <!--core.css is the style for PyScript’s own parts.-->
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2026.7.1/core.js"
+    ></script>
+    <!--core.js is the engine that downloads Python into the page.-->
   </head>
   <body>
     <header class="page_header" id="top">
-        <h1>Dynamic Characteristics Toolkit</h1>
-        <p>ENCS4380 Homework 1: see how a sensor reports the past, smoothed.</p>
-        <nav>
-            <ul>
-                <li><a href="#m1">Module 1</a></li>
-                <li><a href="#m2">Module 2</a></li>
-                <li><a href="#m3">Module 3</a></li>
-                <li><a href="#m4">Module 4</a></li>
-                <li><a href="#valid">Validation</a></li>
-            </ul>
-            
-        </nav>
+      <h1>Dynamic Characteristics Toolkit</h1>
+      <p>ENCS4380 Homework 1: see how a sensor reports the past, smoothed.</p>
+      <nav>
+        <ul>
+          <li><a href="#m1">Module 1</a></li>
+          <li><a href="#m2">Module 2</a></li>
+          <li><a href="#m3">Module 3</a></li>
+          <li><a href="#m4">Module 4</a></li>
+          <li><a href="#valid">Validation</a></li>
+        </ul>
+      </nav>
     </header>
-<!------------------------------------ CARDS START ------------------------------------->
+    <!------------------------------------ CARDS START ------------------------------------->
     <main class="cards">
-        <article>
-            <header><small>Module 1</small></header>
-            <h2>First-Order Time Response</h2>
-            <div class="equation">
-                $$\tau \dot{y} + y = Kx$$
-                $$G(s) = \frac{K}{\tau s + 1}$$
-            </div>
-            
-            <ul>
-                <li>$x$: input (the tea temperature)</li>
-                <li>$y$: output (the thermometer reading)</li>
-                <li>$K$: steady-state gain (how much $y$ ends up per unit of $x$)</li>
-                <li>$\tau$: time constant (time to reach 63.2% of the final change)</li>
-            </ul>
-            <a href="#m1">Launch Simulator</a>
-        </article>
+      <article>
+        <header><small>Module 1</small></header>
+        <h2>First-Order Time Response</h2>
+        <div class="equation">
+          $$\tau \dot{y} + y = Kx$$ $$G(s) = \frac{K}{\tau s + 1}$$
+        </div>
 
-        <article>
-            <header><small>Module 2</small></header>
-            <h2>First-Order Frequency Response</h2>
-            <div class="equation">
-                $$M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$$
-                $$\phi = -\tan^{-1}(\omega\tau)$$
-            </div>
-            
-            <ul>
-                <li>$M$: amplitude ratio</li>
-                <li>$\phi$: phase lag</li>
-                <li>$\omega$: input frequency</li>
-                <li>$\tau$: time constant</li>
-            </ul>
-            <a href="#m2">Launch Simulator</a>
-        </article>
+        <ul>
+          <li>$x$: input (the tea temperature)</li>
+          <li>$y$: output (the thermometer reading)</li>
+          <li>$K$: steady-state gain (how much $y$ ends up per unit of $x$)</li>
+          <li>
+            $\tau$: time constant (time to reach 63.2% of the final change)
+          </li>
+        </ul>
+        <a href="#m1">Launch Simulator</a>
+      </article>
 
-        <article>
-            <header><small>Module 3</small></header>
-            <h2>Second-Order Response</h2>
-            <div class="equation">
-                $$G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$$
-            </div>
-            
-            <ul>
-                <li>$\zeta$: damping ratio</li>
-                <li>$\omega_n$: natural frequency</li>
-                <li>$K$: gain</li>
-            </ul>
-            <a href="#m3">Launch Simulator</a>
-        </article>
+      <article>
+        <header><small>Module 2</small></header>
+        <h2>First-Order Frequency Response</h2>
+        <div class="equation">
+          $$M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$$ $$\phi =
+          -\tan^{-1}(\omega\tau)$$
+        </div>
 
-        <article>
-            <header><small>Module 4</small></header>
-            <h2>Guess the Sensor</h2>
-            <div class="equation">
-                <p>The Game Rules</p>
-            </div>
-            <ol>
-                <li>Press "New sensor": a hidden sensor is picked at random.</li>
-                <li>Look at the noisy curve. A smooth rise is first-order. A curve that overshoots and wiggles is second-order.</li>
-                <li>First-order: τ is the time when the curve reaches 63.2% of its final value.</li>
-                <li>Second-order: estimate ζ from the overshoot, then ωn from how fast it oscillates.</li>
-                <li>Type your guess and press "Submit guess".</li>
-                <li>The true values appear, and you get a score.</li>
-            </ol>
-            <a href="#m4">Launch Simulator</a>
-        </article>
+        <ul>
+          <li>$M$: amplitude ratio</li>
+          <li>$\phi$: phase lag</li>
+          <li>$\omega$: input frequency</li>
+          <li>$\tau$: time constant</li>
+        </ul>
+        <a href="#m2">Launch Simulator</a>
+      </article>
+
+      <article>
+        <header><small>Module 3</small></header>
+        <h2>Second-Order Response</h2>
+        <div class="equation">
+          $$G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$$
+        </div>
+
+        <ul>
+          <li>$\zeta$: damping ratio</li>
+          <li>$\omega_n$: natural frequency</li>
+          <li>$K$: gain</li>
+        </ul>
+        <a href="#m3">Launch Simulator</a>
+      </article>
+
+      <article>
+        <header><small>Module 4</small></header>
+        <h2>Guess the Sensor</h2>
+        <div class="equation">
+          <p>The Game Rules</p>
+        </div>
+        <ol>
+          <li>Press "New sensor": a hidden sensor is picked at random.</li>
+          <li>
+            Look at the noisy curve. A smooth rise is first-order. A curve that
+            overshoots and wiggles is second-order.
+          </li>
+          <li>
+            First-order: τ is the time when the curve reaches 63.2% of its final
+            value.
+          </li>
+          <li>
+            Second-order: estimate ζ from the overshoot, then ωn from how fast
+            it oscillates.
+          </li>
+          <li>Type your guess and press "Submit guess".</li>
+          <li>The true values appear, and you get a score.</li>
+        </ol>
+        <a href="#m4">Launch Simulator</a>
+      </article>
     </main>
-<!------------------------------------ CARDS END ------------------------------------->
+    <!------------------------------------ CARDS END ------------------------------------->
 
+    <!------------------------------------ SIMULATION STARTS ------------------------------------->
+    <section id="m1">
+      <h2>Module 1: First-Order Time Response</h2>
+      <div class="predict">
+        <p>
+          <strong>Predict, then check:</strong> if you double τ, what happens to
+          the time the sensor needs to reach 63.2%?
+        </p>
+        <textarea
+          name="predict"
+          id="predict"
+          placeholder="write your prediction here"
+        ></textarea>
+        <details>
+          <summary><strong>Check</strong></summary>
+          <p>
+            It doubles. The curve reaches 63.2% of its final value at t = τ, so
+            a bigger τ means a slower sensor.
+          </p>
+        </details>
+      </div>
+      <div class="container">
+        <div class="plot1" id="plot1"></div>
+        <div class="output_values">
+          <h3>Values</h3>
+          <ul>
+            <li>y(τ) = <span id="val_tau"></span></li>
+            <li>y(3τ) = <span id="val_3tau"></span></li>
+            <li>Ramp lag = <span id="val_ramp_lag"></span></li>
+            <li>Steady-state error = <span id="val_sse"></span></li>
+          </ul>
+        </div>
+      </div>
+      <!-- error-fraction plot on a log axis -->
+      <div class="plot1_error" id="plot1_error" hidden></div>
+      <div class="sliders">
+        <label for="k">K:<output id="k_out">1</output></label>
+        <input
+          type="range"
+          name="k"
+          id="k"
+          min="0.1"
+          max="10"
+          step="0.1"
+          value="1"
+        />
 
-<!------------------------------------ SIMULATION STARTS ------------------------------------->
-        <section id="m1">
-            <h2>Module 1: First-Order Time Response</h2>
-            <div class="predict">
-                <p><strong>Predict, then check:</strong> if you double τ, what happens to the time the sensor needs to reach 63.2%?</p>
-                <textarea name="predict" id="predict" placeholder="write your prediction here"></textarea>
-                <details>
-                    <summary><strong>Check</strong></summary>
-                    <p>It doubles. The curve reaches 63.2% of its final value at t = τ, so a bigger τ means a slower sensor.</p>
-                </details>
-            </div>
-            <div class="container">
-                <div class="plot1" id="plot1">
+        <label for="tau">τ (sec):<output id="tau_out">10</output></label>
+        <input
+          type="range"
+          name="tau"
+          id="tau"
+          min="0.1"
+          max="20"
+          step="0.1"
+          value="10"
+        />
 
-                </div>
-                <div class="output_values">
-                    <h3>Values</h3>
-                    <ul>
-                        <li>y(τ) = <span id="val_tau"></span></li>
-                        <li>y(3τ) = <span id="val_3tau"></span></li>
-                        <li>Ramp lag = <span id="val_ramp_lag"></span></li>
-                        <li>Steady-state error = <span id="val_sse"></span></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- error-fraction plot on a log axis -->
-            <div class="plot1_error" id="plot1_error" hidden></div>
-            <div class="sliders">
-                <label for="k">K:<output id="k_out">1</output></label>
-                <input type="range" name="k" id="k" min="0.1" max="10" step="0.1" value="1">
-                
-                <label for="tau">τ (sec):<output id="tau_out">10</output></label>
-                <input type="range" name="tau" id="tau" min="0.1" max="20" step="0.1" value="10">
+        <label for="step"
+          ><input
+            id="step"
+            type="radio"
+            name="input"
+            value="step"
+            checked
+          />Step</label
+        >
+        <label for="ramp"
+          ><input id="ramp" type="radio" name="input" value="ramp" />Ramp</label
+        >
+        <br />
+        <label for="error"
+          ><input id="error" type="checkbox" name="error" />Show Error
+          Plot</label
+        >
 
-                <label for="step"><input id="step" type="radio" name="input" value="step" checked>Step</label>
-                <label for="ramp"><input id="ramp" type="radio" name="input" value="ramp">Ramp</label>
-                <br>
-                <label for="error"><input id="error" type="checkbox" name="error">Show Error Plot</label>
+        <p><a href="#top" class="back">↑ Back to modules</a></p>
+      </div>
+    </section>
+    <section id="m2">
+      <h2>Module 2: First-Order Frequency Response</h2>
+      <div class="predict">
+        <p>
+          <strong>Predict, then check:</strong> if τ gets bigger and the input
+          frequency stays the same, what happens to the amplitude and to the
+          phase lag?
+        </p>
+        <textarea
+          placeholder="write your prediction here"
+        ></textarea>
+        <details>
+          <summary><strong>Check</strong></summary>
+          <p>
+            The amplitude gets smaller and the phase lag gets bigger. Both
+            formulas use ωτ, and a bigger τ makes ωτ bigger. Example: τ = 0.2 s
+            and ω = 2 rad/s give an amplitude ratio of 0.93 and a lag of 21.8°.
+          </p>
+        </details>
+      </div>
+      <div class="container">
+        <div class="plot2" id="plot2"></div>
+        <div class="output_values">
+          <h3>Values</h3>
+          <ul>
+            <li>Amplitude ratio M = <span id="val_M"></span></li>
+            <li>Phase lag φ = <span id="val_phase"></span></li>
+            <li>Cutoff ω = 1/τ = <span id="val_cutoff"></span></li>
+            <li>Dynamic error δ = M − 1 = <span id="val_delta"></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bode" id="bode"></div>
 
-                <p><a href="#top" class="back">↑ Back to modules</a></p>
-                
-                
-            </div>
-        </section>
-        <section id="m2"></section>
-        <section id="m3"></section>
-        <section id="m4"></section>
-        <section id="valid"></section>
+      <div class="sliders">
+        <label for="tau2">τ (sec):<output id="tau2_out">0.2</output></label>
+        <input type="range" id="tau2" min="0.1" max="20" step="0.1" value="0.2" />
 
-<!------------------------------------ SIMULATION ENDS ------------------------------------->
+        <label for="w2">ω (rad/s): <output id="w2_out">2</output></label>
+        <input type="range" id="w2" min="0.1" max="20" step="0.1" value="2" />
+        <br />
+      </div>
+      <!--Dynamic-Error Calculator-->
+      <div class="calc">
+        <h3>Dynamic-error calculator</h3>
+        <div class="sliders">
+          <label for="calc_f">Highest signal frequency (Hz)</label>
+          <input type="number" id="calc_f" value="100" min="0.1" /><br>
+          <label for="calc_err">Allowed error (%)</label>
+          <input type="number" id="calc_err" value="5" min="0.1" max="50" /><br>
+          <label for="calc_fphase">Check phase lag at (Hz)</label>
+          <input type="number" id="calc_fphase" value="50" min="0.1" />
+        </div>
+        <p>Largest allowed τ = <span id="calc_taumax"></span></p>
+        <p>Phase lag at that frequency = <span id="calc_phase"></span></p>
+      </div>
+      <p><a href="#top" class="back">↑ Back to modules</a></p>
+    </section>
+    <section id="m3"></section>
+    <section id="m4"></section>
+    <section id="valid"></section>
+
+    <!------------------------------------ SIMULATION ENDS ------------------------------------->
 
     <footer>
-        <p>HW1: Dynamic Characteristics Toolkit</p>
-        <p>Names: Omayma, Beesan, Sarah</p>
+      <p>ENCS4380 Interfacing Techniques, Homework 1</p>
+      <p>Names: Omayma, Beesan, Sarah</p>
     </footer>
-<!-------------------------------------- PYTHON STARTS----------------------------------------------->
-    <py-config>
-      packages = ["numpy", "matplotlib"]
-    </py-config>
+    <!-------------------------------------- PYTHON STARTS----------------------------------------------->
+    <py-config> packages = ["numpy", "matplotlib"] </py-config>
     <script type="py" src="./module1.py"></script>
+    <script type="py" src="./module2.py"></script>
+  </body>
+</html>
 
-<!-------------------------------------- PYTHON ENDS----------------------------------------------->
 
 
+    <!-------------------------------------- PYTHON ENDS----------------------------------------------->
   </body>
 </html>

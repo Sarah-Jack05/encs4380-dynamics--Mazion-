@@ -94,3 +94,22 @@ input[type="number"] {
   max-width: 140px;
 }
 .m2EndCalc{font-weight: bold; color: rgb(16, 12, 147); !important}
+/* Plots Shrink */
+/* Make all generated plots responsive to screen size */
+.plot1 img,
+.plot1_error img,
+.plot2 img,
+.bode img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+/* Prevent flex or grid containers from overflowing on small screens */
+.container > div,
+.bode {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+

@@ -8,7 +8,7 @@ Dynamic Characteristics Interactive Toolkit — ENCS4380 Interfacing Techniques,
 
 | Member | ID | Module |
 |---|---|---|
-| Sarah Abd Al-Muhsen | 1230170 | Module 1,2,3,4 — python calculation then translated to js after having a problem in connecting html to python |
+| Sarah Abd Al-Muhsen | 1230170 | Module 1,2,3,4 — python calculation |
 | Beesan Abutouq | 1230819 | Module 1,2,3,4 — plotting using python |
 | Omayma Altaweel | 1230099 | Module 1,2,3,4 — html&CSS |
 

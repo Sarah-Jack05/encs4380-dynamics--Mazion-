@@ -1,0 +1,88 @@
+/*
+Sarah Abd Al-Muhsen	 	1230170
+Beesan Abutouq 			  1230819
+Omayma Altaweel 			1230099
+*/
+
+[hidden] { display: none !important; }
+
+
+body {
+    background-color: #eef0f6;/*light grey-blue*/
+    font-family: system-ui, sans-serif; 
+    margin: 0;
+    padding: 16px;
+    color: #222; /* almost black */
+}
+
+.page_header {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    text-align: center;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+}
+
+/********************************** 4 Cards Starts ***************************/
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    gap: 24px;
+}
+
+.cards article {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
+}
+
+.cards small {
+    background-color: #eef0f6;
+    color: blueviolet;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+/**** equation **************/
+.equation {
+    background-color: #eef0f6;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 50px;
+    /* padding: 8px; */
+    /* margin: 16px 0; */
+    overflow-x: auto; /* scroll if equation is wider than box */
+}
+/****** ul list and simulation link*****************/
+.cards li {
+    margin-bottom: 8px;
+}
+a {
+    color: blueviolet;
+    text-decoration: none;
+}
+a:hover {
+    color: white;
+    background-color: blueviolet;
+    border-radius: 6px;
+    padding: 1px 5px;
+}
+/**************** phone layout ******************/
+@media screen and (max-width: 768px) {/* screen is 768 or norrower */
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+/***************************************** 4 Cards Ends  ********************************/

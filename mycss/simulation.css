@@ -93,4 +93,4 @@ input[type="number"] {
   border-radius: 8px;
   max-width: 140px;
 }
-.calc p{font-weight: bold; color: rgb(16, 12, 147);}
+.calc > p{font-weight: bold; color: rgb(16, 12, 147);}

@@ -258,9 +258,7 @@ id    for connecting Python
           </ul>
         </div>
       </div>
-      <div class="bode" id="bode"></div>
-
-      <div class="sliders">
+            <div class="sliders">
         <label for="tau2">τ (sec):<output id="tau2_out">0.2</output></label>
         <input type="range" id="tau2" min="0.1" max="20" step="0.1" value="0.2" />
 
@@ -268,6 +266,9 @@ id    for connecting Python
         <input type="range" id="w2" min="0.1" max="20" step="0.1" value="2" />
         <br />
       </div>
+      <div class="bode" id="bode"></div>
+
+
       <!--Dynamic-Error Calculator-->
       <div class="calc">
         <h3>Dynamic-error calculator</h3>
@@ -279,10 +280,11 @@ id    for connecting Python
           <label for="calc_fphase">Check phase lag at (Hz)</label>
           <input type="number" id="calc_fphase" value="50" min="0.1" />
         </div>
-             <div class="m2EndCalc">
+        <div class="m2EndCalc">
             <p>Largest allowed τ = <span id="calc_taumax"></span></p>
             <p>Phase lag at that frequency = <span id="calc_phase"></span></p>
         </div>
+   
       </div>
       <p><a href="#top" class="back">↑ Back to modules</a></p>
     </section>

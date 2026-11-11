@@ -93,7 +93,7 @@ input[type="number"] {
   border-radius: 8px;
   max-width: 140px;
 }
-.m2EndCalc{font-weight: bold; color: rgb(16, 12, 147); !important}
+.m2EndCalc{font-weight: bold; color: rgb(16, 12, 147) !important; }
 /* Plots Shrink */
 /* Make all generated plots responsive to screen size */
 .plot1 img,

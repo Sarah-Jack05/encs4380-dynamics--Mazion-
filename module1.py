@@ -69,7 +69,7 @@ def update_simulation(event=None):
     t = np.linspace(0, t_max, 500)
 
     # إنشاء الرسم الأساسي (Step أو Ramp)
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(8, 4.5))
 
     if is_step:
         y = calculate_step_response(K, tau, t)
@@ -105,7 +105,7 @@ def update_simulation(event=None):
     if error_div:
         if show_error:
             error_div.removeAttribute("hidden")
-            fig_err, ax_err = plt.subplots(figsize=(6, 4))
+            fig_err, ax_err = plt.subplots(figsize=(8, 4.5))
             err_frac = calculate_error_fraction(tau, t)
             ax_err.plot(t, err_frac, linewidth=2.5, color="purple", label=r"$e(t)/e(0)=e^{-t/\tau}$")
             ax_err.set_yscale("log")

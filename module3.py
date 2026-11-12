@@ -190,7 +190,7 @@ def update_module3(event=None):
     # --------------------------------------------------------
     # PLOT 1: Step Response Curve (#plot3)
     # --------------------------------------------------------
-    fig1, ax1 = plt.subplots(figsize=(8, 4.5), dpi=110)
+    fig1, ax1 = plt.subplots(figsize=(6, 4), dpi=110)
     ax1.plot(t, y, color="royalblue", linewidth=2.5, label="System Response")
     ax1.axhline(final_value, color="green", linestyle="--", linewidth=1.5, label=f"Final Value = {final_value:.3f}")
     ax1.axhspan(lower_lim, upper_lim, color="orange", alpha=0.15, label="2% Settling Band")
@@ -220,7 +220,7 @@ def update_module3(event=None):
     # --------------------------------------------------------
     # PLOT 2: S-Plane Pole Plot (#splane)
     # --------------------------------------------------------
-    fig2, ax2 = plt.subplots(figsize=(6, 4.5), dpi=110)
+    fig2, ax2 = plt.subplots(figsize=(6, 4), dpi=110)
     ax2.axhline(0, color="black", linewidth=1.2)
     ax2.axvline(0, color="black", linewidth=1.2)
 
@@ -251,7 +251,7 @@ def update_module3(event=None):
     # --------------------------------------------------------
     velocity = np.gradient(y, t)
 
-    fig3, ax3 = plt.subplots(figsize=(6, 4.5), dpi=110)
+    fig3, ax3 = plt.subplots(figsize=(6, 4), dpi=110)
     ax3.plot(y, velocity, color="teal", linewidth=2, label="Phase Trajectory")
     ax3.scatter(y[0], velocity[0], color="black", marker="o", s=50, zorder=5, label="Start (0,0)")
     ax3.scatter(y[-1], velocity[-1], color="darkorange", marker="x", s=70, zorder=5, label="Equilibrium")

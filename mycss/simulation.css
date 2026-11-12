@@ -60,6 +60,11 @@ img {
     background-color: #f9fafc; /* light grey */
     border: 1px solid #ddd;
     border-radius: 12px;
+    min-width: 0;      /* a grid box may shrink below its content */
+    overflow: hidden;  /* cut anything that still sticks out */
+}
+.container > *, .plotSD > * {
+    min-width: 0;      /* same rule for every grid child (Values panel too) */
 }
 .plot1_error, .bode {
     margin-top: 16px;

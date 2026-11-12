@@ -432,7 +432,7 @@ id    for connecting Python
             <tr><td>6</td><td>State space, m = 1, b = 2, k = 4</td><td>eigenvalues of A = −1 ± j1.732 = poles</td><td id="v6_mine">–</td><td id="v6_res">–</td></tr>
           </tbody>
         </table>
-      </div>
+      </div><br>
         <a class="back" href="#top">↑ Back to modules</a>
 
     </section>
@@ -444,11 +444,17 @@ id    for connecting Python
       <p>Names: Omayma, Beesan, Sarah</p>
     </footer>
     <!-------------------------------------- PYTHON STARTS----------------------------------------------->
-    <py-config> packages = ["numpy", "matplotlib"] </py-config>
+    <py-config>
+      packages = ["numpy", "matplotlib"]
+      
+      [[fetch]]
+      files = ["./module1.py", "./module2.py", "./module3.py"]
+    </py-config>
     <script type="py" src="./module1.py"></script>
     <script type="py" src="./module2.py"></script>
     <script type="py" src="./module3.py"></script>
     <!-- <script type="py" src="./module4.py"></script> -->
+    <script type="py" src="./validation.py"></script>
   </body>
 </html>
 

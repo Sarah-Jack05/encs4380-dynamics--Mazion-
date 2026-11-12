@@ -288,8 +288,132 @@ id    for connecting Python
       </div>
       <p><a href="#top" class="back">↑ Back to modules</a></p>
     </section>
-    <section id="m3"></section>
-    <section id="m4"></section>
+
+    <section id="m3">
+      <h2>Module 3: Second-Order Response</h2>
+      <div class="predict">
+        <p>
+          <strong>Predict, then check:</strong> if you lower the damping b, what happens to the overshoot?
+        </p>
+        <textarea
+          placeholder="write your prediction here"
+        ></textarea>
+        <details>
+          <summary><strong>Check</strong></summary>
+          <p>
+            The overshoot grows. The damping ratio is ζ = b / (2√(km)), so a smaller b gives a smaller ζ. With ζ = 0.5 the overshoot is 16.3%, and with ζ = 1 there is none.
+          </p>
+        </details>
+      </div>
+      <div class="container">
+        <div class="plot3" id="plot3"></div>
+        <div class="output_values">
+          <h3>Values</h3>
+          <ul>
+            <li>Damping ratio ζ  = <span id="val_zeta"></span></li>
+            <li>Natural frequency ωn = <span id="val_wn"></span></li>
+            <li>Rise time = <span id="val_rise"></span></li>
+            <li>Peak time = <span id="val_peak"></span></li>
+            <li>Overshoot = <span id="val_os"></span></li>
+            <li>Settling time = <span id="val_settle"></span></li>
+          </ul>
+        </div>
+      </div>
+         <div class="sliders">
+        <label for="mass">Mass m:<output id="mass_out">1</output></label>
+        <input type="range" id="mass" min="0.1" max="20" step="0.1" value="1" />
+
+        <label for="b">Damping b: <output id="b_out">2</output></label>
+        <input type="range" id="b" min="0.1" max="20" step="0.1" value="2" /><br>
+
+        <label for="spring">Spring k: <output id="spring_out">4</output></label>
+        <input type="range" id="spring" min="0.1" max="20" step="0.1" value="4" />
+      </div>
+      <br>
+    <div class="plotSD">
+        <div class="plot3" id="splane"></div>
+        <div class="plot3" id="phase"></div>
+    </div>
+      <!--State-space Form-->
+      <div class="state_space">
+        <h3>State-space form</h3>
+        <div class="equation">
+            <p>$x_1 = x$, $x_2 = \dot{x}$, $\dot{\mathbf{x}} = A\mathbf{x} + B F(t)$, $y = C\mathbf{x}$</p>
+        </div>
+        <div class="state_space_table"><br>
+            <span>A =</span>
+            <table class="matrix">
+                <tr>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td id="ss_a21"></td>
+                    <td id="ss_a22"></td>
+                </tr>
+            </table>
+            <span>B =</span>
+            <table class="matrix">
+                <tr>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td id="ss_b2"></td>
+                </tr>
+            </table>
+            <span>C =</span>
+            <table class="matrix">
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+            <p>Eigenvalues of A: <span id="ss_eig1">–</span> and <span id="ss_eig2">–</span></p>
+            <p>Poles of G(s): <span id="ss_pole1">–</span> and <span id="ss_pole2">–</span></p>        
+      </div>
+      <p><a href="#top" class="back">↑ Back to modules</a></p>
+    </section>
+
+
+    <section id="m4">
+        <h2>Module 4: Guess the Sensor</h2>
+        <p>A hidden sensor is picked at random and a noisy response is drawn. Read the curve, then estimate its parameters. The true values appear only after you submit.</p>
+        
+        <div class="container">
+        <div class="plot4" id="plot4"></div>
+        <div class="side_list">
+          <h3>Your guess</h3>
+          <p>Input shown: <span id="sensor_info">–</span></p>
+          <div class="sliders">
+            <label for="guess_tau">τ (first-order)</label>
+            <input type="number" id="guess_tau" step="0.01" min="0" /><br>
+            <label for="guess_zeta">ζ (second-order)</label>
+            <input type="number" id="guess_zeta" step="0.01" min="0" /><br>
+            <label for="guess_wn">ωn (rad/s)</label>
+            <input type="number" id="guess_wn" step="0.01" min="0" />
+          </div>
+          <button type="button" id="btn_submit">Submit guess</button>
+        </div>
+      </div>
+       <details class="hint">
+        <summary>Hint</summary>
+        <p>First order: at t = τ the curve is at 63.2% of its final value.</p>
+        <p>Second order: the overshoot depends only on ζ.</p>
+      </details>
+        <div id="output_values" class="output_values" hidden>
+        <h3>True values</h3>
+        <p>τ = <span id="true_tau">–</span></p>
+        <p>ζ = <span id="true_zeta">–</span></p>
+        <p>ωn = <span id="true_wn">–</span></p>
+        <p>This round: <span id="score_round">–</span></p>
+      </div>
+
+      <p class="score">Session score: <span id="score_total">0</span></p>
+      <button type="button" id="btn_new">New sensor</button><br>
+      <a class="back" href="#top">↑ Back to modules</a>
+
+    </section>
     <section id="valid"></section>
 
     <!------------------------------------ SIMULATION ENDS ------------------------------------->
@@ -302,6 +426,8 @@ id    for connecting Python
     <py-config> packages = ["numpy", "matplotlib"] </py-config>
     <script type="py" src="./module1.py"></script>
     <script type="py" src="./module2.py"></script>
+    <script type="py" src="./module3.py"></script>
+    <!-- <script type="py" src="./module4.py"></script> -->
   </body>
 </html>
 

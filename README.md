@@ -10,19 +10,22 @@ Dynamic Characteristics Interactive Toolkit — ENCS4380 Interfacing Techniques,
 |---|---|---|
 | Sarah Abd Al-Muhsen | 1230170 | Module 1,2,3,4 — python calculation |
 | Beesan Abutouq | 1230819 | Module 1,2,3,4 — plotting using python |
-| Omayma Altaweel | 1230099 | Module 1,2,3,4 — html&CSS and connect module1,2,3 |
+| Omayma Altaweel | 1230099 | Module 1,2,3,4 — html&CSS and connect module1,2,3,4 and validation |
 
 
 
 ## What is inside
 
 - `index.html` — the whole page: the four module cards, the four simulators and the validation table.
-- `calc.js` — all the math (port of `calculations.py`): first-order step/ramp, frequency response, second-order step, poles and eigenvalues, the Module 4 random-sensor game.
-- `plot.js` — every Plotly drawing (step/ramp, error fraction on a log axis, sines, Bode, s-plane, phase plane, Module 4).
-- `ui.js` — sliders, buttons, the dynamic-error calculator and the six validation checks.
 - `calculations.py` — the original Python reference calculations.
-- `python/` — the Module 1 and 2 Jupyter/Colab simulations.
-- `CSS_codes/` — page styles (`base.css`) and simulator styles (`modules.css`).
+- `python/` — the Module 1,2,3 and 4 Jupyter/Colab simulations.
+- `CSS_codes/` — page styles (`base.css`) and simulator styles (`simulation.css`).
+- `validation.py` 
+- `module1.py`
+- `module2.py`
+- `module3.py`
+- `module4.py`
+- `test_calculations.py`
 
 ## Running it
 
@@ -30,4 +33,4 @@ The site is fully static: GitHub Pages serves it as-is, nothing to install and n
 
 ## AI use
 
-An AI coding assistant was used to port the Python calculations in `calculations.py` to `calc.js`/`plot.js`/`ui.js` and to set up this README. Every formula and validation number comes from the course lecture slides.
+An AI coding assistant was used to connect calculations.py and simulation python code to html code 

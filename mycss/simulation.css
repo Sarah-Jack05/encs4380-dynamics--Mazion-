@@ -94,23 +94,7 @@ input[type="number"] {
   max-width: 140px;
 }
 .m2EndCalc, .state_space {font-weight: bold; color: rgb(16, 12, 147) !important; }
-/* Plots Shrink */
-/* 1. إجبار الصناديق الرئيسية على عدم تجاوز عرض الشاشة */
-#m1, #m2, .container, .plot1, .plot1_error, .plot2, .bode, .plot3 {
-  max-width: 85% !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
 
-/* 2. إجبار كافة العناصر والصور التي يولدها باي سكربت على الانكماش */
-#plot1 *, 
-#plot1_error *, 
-#plot2 *, 
-#bode * {
-  width: 85% !important;
-  height: auto !important;
-  box-sizing: border-box !important;
-}
 
 /* 3. تحويل التخطيط الجانبي إلى عمودي في الشاشات الصغيرة */
 @media (max-width: 768px) {
@@ -143,8 +127,4 @@ input[type="number"] {
 .state_space p span { font-weight: bold; color: blueviolet; }
 .state_space_table span { font-weight: bold; }
 
-#plot3 img, #splane img, #phase img {
-  width: 85% !important;
-  height: auto !important;
-  display: block !important;
-}
+

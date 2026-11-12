@@ -71,7 +71,7 @@ summary {
 input[type="range"] {width: 25%;}
 /*4. phone */
 @media screen and (max-width: 768px) {
-  .container { grid-template-columns: 1fr; }
+  .container, .plotSD { grid-template-columns: 1fr; }
 }
 
 /********** module 2 : ***************/
@@ -96,13 +96,6 @@ input[type="number"] {
 .m2EndCalc, .state_space {font-weight: bold; color: rgb(16, 12, 147) !important; }
 
 
-/* 3. تحويل التخطيط الجانبي إلى عمودي في الشاشات الصغيرة */
-@media (max-width: 768px) {
-  .container, .plotSD {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-}
 
 /*module 3*/
 .plotSD {

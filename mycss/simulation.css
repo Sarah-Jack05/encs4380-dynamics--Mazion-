@@ -3,6 +3,8 @@ Sarah Abd Al-Muhsen	 	1230170
 Beesan Abutouq 			  1230819
 Omayma Altaweel 			1230099
 */
+
+/* ================= SECTION BOX (all modules) ================= */
 section {
     background-color: white;
     border-radius: 16px;
@@ -15,122 +17,192 @@ section {
 section h2 {
     margin-top: 0;
 }
-/**** predict Box ****/
+
+/* ================= PREDICT BOX ================= */
 .predict {
-    background-color: #f5f0ff;/*light purple*/
+    background-color: #f5f0ff; /* light purple */
     border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
 }
 textarea {
     width: 90%;
-    box-sizing: border-box;/*count padding and border inside the box*/
+    box-sizing: border-box; /* count padding and border inside the width */
     min-height: 60px;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 8px;
-    font-family: inherit;/*text area ignores page font by default*/
+    font-family: inherit; /* a textarea ignores the page font by default */
 }
 summary {
     cursor: pointer;
     color: blueviolet;
 }
-/************* Plot & Values ******************/
-/*1. plot */
+
+/* ================= PLOT + VALUES LAYOUT ================= */
 .container {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    /* minmax(0, ...) lets a column shrink below its content (big images) */
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
     gap: 10px;
 }
-.plot1, .plot1_error, .plot2, .bode, .plot3 {
+
+/* images (the matplotlib plots) never get wider than their box */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* every graph box */
+.plot1, .plot1_error, .plot2, .bode, .plot3, .plot4 {
     min-height: 300px;
-    background-color: #f9fafc;/*light gray*/
+    background-color: #f9fafc; /* light grey */
     border: 1px solid #ddd;
     border-radius: 12px;
 }
-
 .plot1_error, .bode {
     margin-top: 16px;
 }
-/*2. values */
-.output_values {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
+
+/* ================= VALUES PANEL, CALCULATOR, STATE SPACE ================= */
+.output_values, .calc, .state_space {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
 }
-.output_values h3 {margin-top: 0;}
-.output_values ul { padding: 0; margin: 0;}
-.output_values ul li{ padding: 2px 0px; margin: 0px 4px;}
-.output_values span {
+.calc, .state_space {
+    margin-top: 16px;
+}
+.output_values h3, .calc h3, .state_space h3 {
+    margin-top: 0;
+}
+.output_values ul {
+    padding: 0;
+    margin: 0;
+}
+.output_values ul li {
+    padding: 2px 0px;
+    margin: 0px 4px;
+}
+.output_values span, .calc span {
     font-weight: bold;
     color: blueviolet;
 }
-/*3. sliders */
-.sliders {margin-top: 16px;}
-.sliders label {font-weight: bold; color: rgb(16, 12, 147);}
-input[type="range"] {width: 25%;}
-/*4. phone */
-@media screen and (max-width: 768px) {
-  .container, .plotSD { grid-template-columns: 1fr; }
-}
 
-/********** module 2 : ***************/
-.output_values, .calc, .state_space {
-  margin-top: 16px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
+/* ================= SLIDERS AND INPUTS ================= */
+.sliders {
+    margin-top: 16px;
 }
-.output_values h3, .calc h3, .state_space h3 { margin-top: 0; }
-.output_values span, .calc span{
-  font-weight: bold;
-  color: blueviolet;
+.sliders label {
+    font-weight: bold;
+    color: rgb(16, 12, 147);
 }
-output { font-weight: bold; color: blueviolet; }/* live numbers next to slider */
+input[type="range"] {
+    width: 25%;
+}
+output {
+    font-weight: bold;
+    color: blueviolet; /* live numbers next to the sliders */
+}
 input[type="number"] {
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  max-width: 140px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 140px;
 }
-.m2EndCalc, .state_space {font-weight: bold; color: rgb(16, 12, 147) !important; }
+.m2EndCalc, .state_space {
+    font-weight: bold;
+    color: rgb(16, 12, 147) !important;
+}
 
-
-
-/*module 3*/
+/* ================= MODULE 3 ================= */
 .plotSD {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 16px;
 }
 .state_space_table {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 }
 .matrix {
-  border-left: 2px solid #333;
-  border-right: 2px solid #333;
-  border-radius: 6px;
-  text-align: center;
-  margin-top: 5px;
+    border-left: 2px solid #333;
+    border-right: 2px solid #333;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 5px;
 }
-.matrix td { padding: 3px 10px; }
-.state_space p span { font-weight: bold; color: blueviolet; }
-.state_space_table span { font-weight: bold; }
-
-button {
-    background-color: #f5f0ff;
+.matrix td {
+    padding: 3px 10px;
+}
+.state_space p span {
+    font-weight: bold;
     color: blueviolet;
-    padding: 5px 10px;
-    margin: 10px 0px;
-    border-radius: 5px;
+}
+.state_space_table span {
+    font-weight: bold;
+}
+
+/* ================= MODULE 4 ================= */
+button {
+    background-color: blueviolet;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 button:hover {
-    color: #f5f0ff;
-    background-color: blueviolet;
-    cursor: pointer;
+    opacity: 0.90;
+}
+.hint {
+    margin-top: 16px;
+}
+.score {
+    font-weight: bold;
+    margin-top: 16px;
+}
+#result4 {
+    background-color: #e8f6ec; /* light green */
+    margin-top: 16px;
 }
 
+/* ================= VALIDATION TABLE ================= */
+.table_wrap {
+    overflow-x: auto; /* the table scrolls, the page does not */
+}
+.validation_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.validation_table th,
+.validation_table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+.validation_table th {
+    background-color: #f5f0ff;
+}
 
+/* ================= HIDDEN ATTRIBUTE ALWAYS WINS ================= */
+[hidden] {
+    display: none !important;
+}
+
+/* ================= PHONE (keep this block last) ================= */
+@media screen and (max-width: 768px) {
+    .container, .plotSD {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    input[type="range"] {
+        width: 100%;
+    }
+}

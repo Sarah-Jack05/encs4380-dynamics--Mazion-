@@ -3,7 +3,13 @@ import matplotlib.pyplot as plt
 from pyscript import document, display, when
 
 from module1 import calculate_step_response
-from module3 import calculate_second_order_step_response, calculate_overshoot
+from module3 import calculate_second_order_step_response
+
+def calculate_overshoot(zeta):
+    if zeta < 1:
+        return float(np.exp((-np.pi * zeta) / np.sqrt(1 - zeta**2)) * 100)
+    return 0.0
+
 
 # ============================================================
 # 1. Game State Storage

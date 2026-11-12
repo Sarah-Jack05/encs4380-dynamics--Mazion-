@@ -120,4 +120,17 @@ input[type="number"] {
 .state_space p span { font-weight: bold; color: blueviolet; }
 .state_space_table span { font-weight: bold; }
 
+button {
+    background-color: #f5f0ff;
+    color: blueviolet;
+    padding: 5px 10px;
+    margin: 10px 0px;
+    border-radius: 5px;
+}
+button:hover {
+    color: #f5f0ff;
+    background-color: blueviolet;
+    cursor: pointer;
+}
+
 

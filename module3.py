@@ -145,9 +145,10 @@ def update_module3(event=None):
 
     t_10, t_90, rise_time = None, None, None
     if len(idx_10) > 0 and len(idx_90) > 0:
-        i10, i90 = int(idx_10[0]), int(idx_90[0])
-        t_10 = float(t[0]) if i10 == 0 else interpolate_crossing(t[i10-1], y[i10-1], t[i10], y[i10], level_10)
-        t_90 = float(t[0]) if i90 == 0 else interpolate_crossing(t[i90-1], y[i90-1], t[i90], y[i90], level_90)
+        i10 = int(idx_10[0])
+        i90 = int(idx_90[0])
+        t_10 = float(t[0]) if i10 == 0 else interpolate_crossing(t[i10 - 1], y[i10 - 1], t[i10], y[i10], level_10)
+        t_90 = float(t[0]) if i90 == 0 else interpolate_crossing(t[i90 - 1], y[i90 - 1], t[i90], y[i90], level_90)
         rise_time = float(t_90 - t_10)
 
     # Performance Metrics: Settling Time (2% criterion)
@@ -163,7 +164,7 @@ def update_module3(event=None):
     elif outside_idx[-1] < len(t) - 1:
         last_out = int(outside_idx[-1])
         boundary = upper_lim if y[last_out] > upper_lim else lower_lim
-        settling_time = interpolate_crossing(t[last_out], y[last_out], t[last_out+1], y[last_out+1], boundary)
+        settling_time = interpolate_crossing(t[last_out], y[last_out], t[last_out + 1], y[last_out + 1], boundary)
 
     # Update Values list in HTML
     document.querySelector("#val_zeta").innerText = f"{zeta:.3f} ({damping_type})"
@@ -245,7 +246,7 @@ def update_module3(event=None):
     display(fig2, target="splane")
     plt.close(fig2)
 
-        # --------------------------------------------------------
+    # --------------------------------------------------------
     # PLOT 3: Phase Plane Trajectory (#phase)
     # --------------------------------------------------------
     velocity = np.gradient(y, t)
@@ -254,7 +255,6 @@ def update_module3(event=None):
     ax3.plot(y, velocity, color="teal", linewidth=2, label="Phase Trajectory")
     ax3.scatter(y[0], velocity[0], color="black", marker="o", s=50, zorder=5, label="Start (0,0)")
     ax3.scatter(y[-1], velocity[-1], color="darkorange", marker="x", s=70, zorder=5, label="Equilibrium")
-
     ax3.set_title("Phase Plane (Velocity vs Displacement)", fontsize=12, fontweight="bold")
     ax3.set_xlabel("Displacement x(t)")
     ax3.set_ylabel("Velocity dx/dt")
@@ -267,14 +267,14 @@ def update_module3(event=None):
     display(fig3, target="phase")
     plt.close(fig3)
 
+
 # ============================================================
 # 3. Event Listeners and Initial Execution
 # ============================================================
-@when("input", "#mass")
-@when("input", "#b")
-@when("input", "#spring")
+@when("input", "#mass, #b, #spring")
 def on_m3_slider_change(event):
     update_module3()
 
-# Run initial simulation on page load
+
+# Run the initial simulation on page load
 update_module3()

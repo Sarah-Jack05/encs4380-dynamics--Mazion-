@@ -414,11 +414,32 @@ id    for connecting Python
       <a class="back" href="#top">↑ Back to modules</a>
 
     </section>
-    <section id="valid"></section>
+<!---------------------------------------Valid section ---------------------------------->
+    <section id="valid">
+        <h2>Validation checks</h2>
+        <p>Each result is compared with the expected value from the lecture slides.</p>
+              <div class="table_wrap">
+        <table class="validation_table">
+          <thead>
+            <tr><th>#</th><th>Check</th><th>Expected</th><th>Your value</th><th>Result</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>First-order step</td><td>y(τ) = 0.632 KA and y(3τ) = 0.95 KA</td><td id="v1_mine">–</td><td id="v1_res">–</td></tr>
+            <tr><td>2</td><td>τ = 0.2 s, input sin 2t</td><td>amplitude 0.93, lag 21.8°</td><td id="v2_mine">–</td><td id="v2_res">–</td></tr>
+            <tr><td>3</td><td>100 Hz signals, at most 5% error</td><td>τmax ≈ 0.52 ms, lag 9.3° at 50 Hz</td><td id="v3_mine">–</td><td id="v3_res">–</td></tr>
+            <tr><td>4</td><td>Second order, ζ = 0.5</td><td>overshoot = 16.3%</td><td id="v4_mine">–</td><td id="v4_res">–</td></tr>
+            <tr><td>5</td><td>Second order, ζ = 1</td><td>no overshoot</td><td id="v5_mine">–</td><td id="v5_res">–</td></tr>
+            <tr><td>6</td><td>State space, m = 1, b = 2, k = 4</td><td>eigenvalues of A = −1 ± j1.732 = poles</td><td id="v6_mine">–</td><td id="v6_res">–</td></tr>
+          </tbody>
+        </table>
+      </div>
+        <a class="back" href="#top">↑ Back to modules</a>
+
+    </section>
 
     <!------------------------------------ SIMULATION ENDS ------------------------------------->
 
-    <footer>
+    <footer class="page_footer">
       <p>ENCS4380 Interfacing Techniques, Homework 1</p>
       <p>Names: Omayma, Beesan, Sarah</p>
     </footer>

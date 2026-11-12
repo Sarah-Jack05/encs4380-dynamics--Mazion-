@@ -42,7 +42,7 @@ summary {
     grid-template-columns: 3fr 1fr;
     gap: 10px;
 }
-.plot1, .plot1_error, .plot2, .bode {
+.plot1, .plot1_error, .plot2, .bode, .plot3 {
     min-height: 300px;
     background-color: #f9fafc;/*light gray*/
     border: 1px solid #ddd;
@@ -75,13 +75,13 @@ input[type="range"] {width: 25%;}
 }
 
 /********** module 2 : ***************/
-.output_values, .calc {
+.output_values, .calc, .state_space {
   margin-top: 16px;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
 }
-.output_values h3, .calc h3 { margin-top: 0; }
+.output_values h3, .calc h3, .state_space h3 { margin-top: 0; }
 .output_values span, .calc span{
   font-weight: bold;
   color: blueviolet;
@@ -93,10 +93,10 @@ input[type="number"] {
   border-radius: 8px;
   max-width: 140px;
 }
-.m2EndCalc{font-weight: bold; color: rgb(16, 12, 147) !important; }
+.m2EndCalc, .state_space {font-weight: bold; color: rgb(16, 12, 147) !important; }
 /* Plots Shrink */
 /* 1. إجبار الصناديق الرئيسية على عدم تجاوز عرض الشاشة */
-#m1, #m2, .container, .plot1, .plot1_error, .plot2, .bode {
+#m1, #m2, .container, .plot1, .plot1_error, .plot2, .bode, .plot3 {
   max-width: 100% !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
@@ -114,10 +114,37 @@ input[type="number"] {
 
 /* 3. تحويل التخطيط الجانبي إلى عمودي في الشاشات الصغيرة */
 @media (max-width: 768px) {
-  .container {
+  .container, .plotSD {
     display: flex !important;
     flex-direction: column !important;
   }
 }
 
+/*module 3*/
+.plotSD {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.state_space_table {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.matrix {
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: 5px;
+}
+.matrix td { padding: 3px 10px; }
+.state_space p span { font-weight: bold; color: blueviolet; }
+.state_space_table span { font-weight: bold; }
 
+#plot3 img, #splane img, #phase img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}

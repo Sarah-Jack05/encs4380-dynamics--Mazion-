@@ -97,7 +97,7 @@ input[type="number"] {
 /* Plots Shrink */
 /* 1. إجبار الصناديق الرئيسية على عدم تجاوز عرض الشاشة */
 #m1, #m2, .container, .plot1, .plot1_error, .plot2, .bode, .plot3 {
-  max-width: 100% !important;
+  max-width: 85% !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
 }
@@ -107,7 +107,7 @@ input[type="number"] {
 #plot1_error *, 
 #plot2 *, 
 #bode * {
-  width: 100% !important;
+  width: 85% !important;
   height: auto !important;
   box-sizing: border-box !important;
 }
@@ -144,7 +144,7 @@ input[type="number"] {
 .state_space_table span { font-weight: bold; }
 
 #plot3 img, #splane img, #phase img {
-  width: 100% !important;
+  width: 85% !important;
   height: auto !important;
   display: block !important;
 }

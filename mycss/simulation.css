@@ -4,7 +4,7 @@ Beesan Abutouq 			  1230819
 Omayma Altaweel 			1230099
 */
 
-/* ================= SECTION BOX (all modules) ================= */
+/* ================= SECTION BOX (all modules, HW1 and HW2) ================= */
 section {
     background-color: white;
     border-radius: 16px;
@@ -12,7 +12,7 @@ section {
     box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
     max-width: 950px;
     margin: 0 auto 24px;
-    scroll-margin-top: 16px;
+    scroll-margin-top: 64px; /* when a link jumps here, stay clear of the burger button */
 }
 section h2 {
     margin-top: 0;
@@ -54,8 +54,9 @@ img {
     display: block;
 }
 
-/* every graph box */
-.plot1, .plot1_error, .plot2, .bode, .plot3, .plot4 {
+/* every graph box (HW1 and HW2) */
+.plot1, .plot1_error, .plot2, .bode, .plot3, .plot4,
+.plot_p1, .plot_p2, .plot_p3, .plot_p3b, .plot_p4, .plot_my {
     min-height: 300px;
     background-color: #f9fafc; /* light grey */
     border: 1px solid #ddd;
@@ -66,7 +67,7 @@ img {
 .container > *, .plotSD > * {
     min-width: 0;      /* same rule for every grid child (Values panel too) */
 }
-.plot1_error, .bode {
+.plot1_error, .bode, .plot_p3b {
     margin-top: 16px;
 }
 
@@ -110,11 +111,17 @@ output {
     font-weight: bold;
     color: blueviolet; /* live numbers next to the sliders */
 }
-input[type="number"] {
+input[type="number"],
+select {
     padding: 6px;
     border: 1px solid #ddd;
     border-radius: 8px;
     max-width: 140px;
+    font-family: inherit;
+}
+select {
+    max-width: 100%;
+    background-color: white;
 }
 .m2EndCalc, .state_space {
     font-weight: bold;
@@ -152,7 +159,7 @@ input[type="number"] {
     font-weight: bold;
 }
 
-/* ================= MODULE 4 ================= */
+/* ================= BUTTONS, HINT, SCORE (Module 4 and P4) ================= */
 button {
     background-color: blueviolet;
     color: white;
@@ -174,12 +181,75 @@ button:hover {
     font-weight: bold;
     margin-top: 16px;
 }
-#result4 {
+/* Module 4 reveal box: its id is output_values because module4.py uses that id */
+#output_values {
     background-color: #e8f6ec; /* light green */
     margin-top: 16px;
 }
 
-/* ================= VALIDATION TABLE ================= */
+/* ================= PASS / FAIL ================= */
+.pass {
+    color: #1b8a3a;
+    font-weight: bold;
+}
+.fail {
+    color: #c62828;
+    font-weight: bold;
+}
+.status {
+    font-weight: bold;
+    margin-top: 12px;
+}
+#p4-checks {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+}
+#p4-checks li {
+    padding: 3px 0;
+}
+
+/* ================= HW2: BLOCK DIAGRAM, NOTES, CODE ================= */
+.diagram {
+    margin-bottom: 16px;
+    padding: 8px;
+    background-color: #f9fafc;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    color: #222;        /* the SVG draws with currentColor */
+    overflow-x: auto;   /* on a phone the diagram scrolls instead of shrinking */
+}
+.diagram svg {
+    display: block;
+    width: 100%;
+    min-width: 620px;
+    height: auto;
+}
+/* a note that lists what a module must show (delete it when the module is finished) */
+.pillars {
+    border: 2px dashed blueviolet;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+.pillars h3 {
+    margin: 0 0 8px;
+}
+.pillars ol {
+    margin: 0;
+    padding-left: 20px;
+}
+pre.code {
+    background-color: #1e1e2e;
+    color: #f5f5f5;
+    padding: 12px 16px;
+    border-radius: 12px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ================= VALIDATION TABLES (HW1 and HW2) ================= */
 .table_wrap {
     overflow-x: auto; /* the table scrolls, the page does not */
 }
@@ -196,10 +266,12 @@ button:hover {
 .validation_table th {
     background-color: #f5f0ff;
 }
-
-/* ================= HIDDEN ATTRIBUTE ALWAYS WINS ================= */
-[hidden] {
-    display: none !important;
+.validation_table td:first-child,
+.validation_table th:first-child {
+    text-align: center; /* the # column */
+}
+.validation_table tbody tr:nth-child(even) {
+    background-color: #fafafa; /* light stripe on every second row */
 }
 
 /* ================= PHONE (keep this block last) ================= */

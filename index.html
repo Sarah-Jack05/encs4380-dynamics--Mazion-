@@ -52,11 +52,6 @@ id    for connecting Python
       src="https://pyscript.net/releases/2026.7.1/core.js"
     ></script>
     <!--core.js is the engine that downloads Python into the page.-->
-
-    <!--packages = Python libraries to download.
-        [files]  = "where the file is" = "the name Python sees".
-        This is what makes "from module1 import ..." and "from pid_core import ..." work.
-        (pid_core_p1_p4.py is shown to Python under the name pid_core.py)-->
   </head>
 
   <body>
@@ -98,15 +93,97 @@ id    for connecting Python
       </details>
     </nav>
 
-    <!-- ======================= GREETING HEADER ======================= -->
+    <!-- ======================= TOP BAR (always visible) ======================= -->
+    <div class="topbar">
+      <a class="brand" href="#top">
+        <span class="brand_mark">τ</span>
+        <span class="brand_name">ENCS4380 Toolkit</span>
+      </a>
+      <nav class="topbar_links" aria-label="Quick links">
+        <a href="#hw1">HW1 · Dynamics</a>
+        <a href="#hw2">HW2 · PID Control</a>
+      </nav>
+    </div>
+
+    <!-- ======================= LANDING PAGE HERO ======================= -->
     <header class="page_header" id="top">
-      <h1>Welcome to the ENCS4380 Toolkit</h1>
-      <p>Interfacing Techniques, Birzeit University</p>
-      <p>
-        Homework 1: see how a sensor reports the past, smoothed. Homework 2:
-        make the system faster and more accurate with feedback.
-      </p>
-      <p>Open the ☰ menu on the left to jump to any module.</p>
+      <div class="hero_inner">
+        <div class="hero_text">
+          <p class="hero_pill">
+            ENCS4380 · Interfacing Techniques · Birzeit University
+          </p>
+          <h1>
+            Welcome to the ENCS4380 <span class="hero_accent">Toolkit</span>
+          </h1>
+          <p class="hero_lead">
+            Two homeworks, one page. First see how a sensor reports the past,
+            smoothed. Then make the system faster and more accurate with
+            feedback.
+          </p>
+          <div class="hero_buttons">
+            <a class="hero_btn hero_btn_main" href="#hw1"
+              >Homework 1 · Dynamics</a
+            >
+            <a class="hero_btn hero_btn_alt" href="#hw2"
+              >Homework 2 · PID Control</a
+            >
+          </div>
+          <p class="hero_team">By Omayma, Beesan and Sarah</p>
+        </div>
+
+        <!-- small picture of the idea: a first-order sensor answering a step -->
+        <div class="hero_visual">
+          <svg
+            viewBox="0 0 440 260"
+            role="img"
+            aria-label="A step input x(t) and the smoothed sensor output y(t), which reaches 63.2 percent of the final value at t equals tau."
+          >
+            <g stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none">
+              <line x1="50" y1="210" x2="420" y2="210" />
+              <line x1="50" y1="30" x2="50" y2="210" />
+            </g>
+            <!-- input: a step (dashed) -->
+            <path
+              d="M 50 210 L 110 210 L 110 70 L 420 70"
+              fill="none"
+              stroke="rgba(255,255,255,0.7)"
+              stroke-width="3"
+              stroke-dasharray="8 6"
+            />
+            <!-- guides at t = tau (dotted) -->
+            <path
+              d="M 190 210 L 190 121.5 L 50 121.5"
+              fill="none"
+              stroke="rgba(255,255,255,0.5)"
+              stroke-width="2"
+              stroke-dasharray="2 5"
+            />
+            <!-- output: y = 1 - e^(-t/tau) -->
+            <path
+              d="M 110 210 L 120 193.5 L 130 179 L 140 166.2 L 150 154.9 L 160 144.9 L 170 136.1 L 180 128.4 L 190 121.5 L 200 115.5 L 210 110.1 L 220 105.4 L 230 101.2 L 240 97.6 L 250 94.3 L 260 91.5 L 270 88.9 L 280 86.7 L 290 84.8 L 300 83 L 310 81.5 L 320 80.1 L 330 78.9 L 340 77.9 L 350 77 L 360 76.2 L 370 75.4 L 380 74.8 L 390 74.2 L 400 73.7 L 410 73.3 L 420 72.9"
+              fill="none"
+              stroke="#f5d0fe"
+              stroke-width="5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle
+              cx="190"
+              cy="121.5"
+              r="7"
+              fill="white"
+              stroke="#c084fc"
+              stroke-width="3"
+            />
+            <g fill="white" font-family="system-ui, sans-serif" font-size="14">
+              <text x="204" y="146">63.2% at t = τ</text>
+              <text x="300" y="56">x(t) input</text>
+              <text x="296" y="112">y(t) sensor output</text>
+              <text x="388" y="232" font-size="12">time</text>
+            </g>
+          </svg>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -1285,7 +1362,7 @@ id    for connecting Python
 
     <footer class="page_footer">
       <p>ENCS4380 Interfacing Techniques, Homework 1 and Homework 2</p>
-      <p>Names: Omayma Altaweel, Beesan Abutouq, Sarah Abd Al-Muhsen</p>
+      <p>Names: Omayma, Beesan, Sarah</p>
     </footer>
 
     <!-- closes the menu after a link is clicked (the only plain JavaScript on the page) -->
@@ -1298,14 +1375,14 @@ id    for connecting Python
     </script>
 
     <!-------------------------------------- PYTHON STARTS----------------------------------------------->
+    <!--packages = Python libraries to download.
+    [files]  = "where the file is" = "the name Python sees".
+    This is what makes "from module1 import ..." and "from pid_core import ..." work.
+    (pid_core_p1_p4.py is shown to Python under the name pid_core.py)-->
     <py-config>
-      packages = ["numpy", "matplotlib"]
-
-      [files]
-      "./HW1/module1.py" = "./module1.py"
-      "./HW1/module2.py" = "./module2.py"
-      "./HW1/module3.py" = "./module3.py"
-      "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
+      packages = ["numpy", "matplotlib"] [files] "./HW1/module1.py" =
+      "./module1.py" "./HW1/module2.py" = "./module2.py" "./HW1/module3.py" =
+      "./module3.py" "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
     </py-config>
 
     <script type="py" src="./HW1/module1.py"></script>

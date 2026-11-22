@@ -54,6 +54,11 @@ def simulate_pid(plant_type, plant_params, Kp, Ki, Kd, setpoint=1.0,
                 x2 += (dt / 6.0) * (k1_2 + 2*k2_2 + 2*k3_2 + k4_2)
 
     return t, r, y, u
+############# Simulate_PID Ends #################
+############# compute_metrics Starts #################
+## Key Words: extract 4 metrics required in P1-to show them directly
+############# and P4 to judge (Fail/Pass) and these metrics are
+################################################ Rise Time, Overshoot, Settling Time, Steady-state Error
 
 def compute_metrics(t, y, setpoint):
     if setpoint == 0:

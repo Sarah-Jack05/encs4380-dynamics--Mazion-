@@ -12,7 +12,7 @@ section {
     box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
     max-width: 950px;
     margin: 0 auto 24px;
-    scroll-margin-top: 64px; /* when a link jumps here, stay clear of the burger button */
+    scroll-margin-top: 88px; /* when a link jumps here, stay clear of the fixed top bar */
 }
 section h2 {
     margin-top: 0;

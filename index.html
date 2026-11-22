@@ -1375,10 +1375,22 @@ id    for connecting Python
     </script>
 
     <!-------------------------------------- PYTHON STARTS----------------------------------------------->
-   <py-config>
-      packages = ["numpy", "matplotlib"] [files] "./HW1/module1.py" =
-      "./module1.py" "./HW1/module2.py" = "./module2.py" "./HW1/module3.py" =
-      "./module3.py" "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
+    <!--packages = Python libraries to download.
+        files    = "where the file is": "the name Python sees".
+        This is what makes "from module1 import ..." and "from pid_core import ..." work.
+        (pid_core_p1_p4.py is shown to Python under the name pid_core.py)
+        It is JSON (not TOML) on purpose: an HTML formatter can reflow the lines
+        of TOML and break it, but JSON does not care about line breaks. -->
+    <py-config type="json">
+      {
+        "packages": ["numpy", "matplotlib"],
+        "files": {
+          "./HW1/module1.py": "./module1.py",
+          "./HW1/module2.py": "./module2.py",
+          "./HW1/module3.py": "./module3.py",
+          "./HW2/pid_core_p1_p4.py": "./pid_core.py"
+        }
+      }
     </py-config>
 
     <script type="py" src="./HW1/module1.py"></script>
@@ -1388,7 +1400,7 @@ id    for connecting Python
     <script type="py" src="./HW1/validation.py"></script>
 
     <script type="py" src="./HW2/pid_p1.py"></script>
-    <!-- <script type="py" src="./HW2/pid_p2.py"></script>  -->
+    <!-- <script type="py" src="./HW2/pid_p2.py"></script> -->
     <!-- <script type="py" src="./HW2/pid_p3.py"></script> -->
     <script type="py" src="./HW2/pid_p4.py"></script>
     <!-- <script type="py" src="./HW2/pid_validation.py"></script> -->

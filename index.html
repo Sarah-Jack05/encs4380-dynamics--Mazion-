@@ -58,10 +58,15 @@ id    for connecting Python
         This is what makes "from module1 import ..." and "from pid_core import ..." work.
         (pid_core_p1_p4.py is shown to Python under the name pid_core.py)-->
     <py-config>
-      packages = ["numpy", "matplotlib"] [files] "./HW1/module1.py" =
-      "./module1.py" "./HW1/module2.py" = "./module2.py" "./HW1/module3.py" =
-      "./module3.py" "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
+      packages = ["numpy", "matplotlib"]
+
+      [files]
+      "./HW1/module1.py" = "./module1.py"
+      "./HW1/module2.py" = "./module2.py"
+      "./HW1/module3.py" = "./module3.py"
+      "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
     </py-config>
+
   </head>
 
   <body>
@@ -1310,10 +1315,10 @@ id    for connecting Python
     <script type="py" src="./HW1/validation.py"></script>
 
     <script type="py" src="./HW2/pid_p1.py"></script>
-    <script type="py" src="./HW2/pid_p2.py"></script>
-    <script type="py" src="./HW2/pid_p3.py"></script>
+    <!-- <script type="py" src="./HW2/pid_p2.py"></script> -->
+    <!-- <script type="py" src="./HW2/pid_p3.py"></script> -->
     <script type="py" src="./HW2/pid_p4.py"></script>
-    <script type="py" src="./HW2/pid_validation.py"></script>
+    <!-- <script type="py" src="./HW2/pid_validation.py"></script> -->
     <!-------------------------------------- PYTHON ENDS----------------------------------------------->
   </body>
 </html>

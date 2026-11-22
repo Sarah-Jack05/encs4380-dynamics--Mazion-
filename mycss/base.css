@@ -4,71 +4,20 @@ Beesan Abutouq 			  1230819
 Omayma Altaweel 			1230099
 */
 
+/* ================= PAGE ================= */
 [hidden] { display: none !important; }
 
+html { scroll-behavior: smooth; }
 
 body {
-    background-color: #eef0f6;/*light grey-blue*/
-    font-family: system-ui, sans-serif; 
+    background-color: #eef0f6; /* light grey-blue */
+    font-family: system-ui, sans-serif;
     margin: 0;
     padding: 16px;
     color: #222; /* almost black */
 }
 
-.page_header {
-    max-width: 1100px;
-    margin: 0 auto 24px;
-    text-align: center;
-}
-
-nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    list-style: none;
-    padding: 0;
-}
-
-/********************************** 4 Cards Starts ***************************/
-.cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 1100px;
-    margin: 0 auto 24px;
-    gap: 24px;
-}
-
-.cards article {
-  background-color: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
-}
-
-.cards small {
-    background-color: #eef0f6;
-    color: blueviolet;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-weight: bolder;
-    text-transform: uppercase;
-}
-/**** equation **************/
-.equation {
-    background-color: #eef0f6;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-align: center;
-    min-height: 50px;
-    /* padding: 8px; */
-    /* margin: 16px 0; */
-    overflow-x: auto; /* scroll if equation is wider than box */
-}
-/****** ul list and simulation link*****************/
-.cards li {
-    margin-bottom: 8px;
-}
+/* ================= LINKS ================= */
 a {
     color: blueviolet;
     text-decoration: none;
@@ -79,10 +28,198 @@ a:hover {
     border-radius: 6px;
     padding: 1px 5px;
 }
-/**************** phone layout ******************/
-@media screen and (max-width: 768px) {/* screen is 768 or norrower */
+.back {
+    display: inline-block;
+    margin-top: 16px;
+}
+
+/* ================= GREETING HEADER ================= */
+.page_header {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding-top: 40px; /* room for the burger button on small screens */
+    text-align: center;
+}
+.page_header h1 { margin-bottom: 8px; }
+.page_header p { margin: 4px 0; color: #555; }
+
+/* ================= BURGER BUTTON + SIDEBAR (no JavaScript needed) =================
+   A hidden checkbox remembers "open" or "closed".
+   :checked ~ .sidebar means "a .sidebar that comes after a checked checkbox".      */
+.menu_toggle {
+    position: fixed;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+.burger {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1001;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: white;
+    color: blueviolet;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 2px 8px;
+    cursor: pointer;
+    user-select: none;
+}
+.burger:hover {
+    background-color: blueviolet;
+    color: white;
+}
+.menu_toggle:focus-visible ~ .burger {
+    outline: 3px solid blueviolet; /* keyboard focus ring */
+}
+
+/* dark layer behind the open menu: clicking it closes the menu */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    z-index: 998;
+}
+.menu_toggle:checked ~ .overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85%;
+    box-sizing: border-box;
+    padding: 72px 16px 24px;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.2) 4px 0 16px;
+    transform: translateX(-100%);              /* closed: pushed out to the left */
+    visibility: hidden;
+    transition: transform 0.25s, visibility 0s 0.25s;
+    z-index: 999;
+}
+.menu_toggle:checked ~ .sidebar {
+    transform: translateX(0);                  /* open: slides in */
+    visibility: visible;
+    transition: transform 0.25s;
+}
+.sidebar h2 {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+}
+.sidebar ul {
+    list-style: none;
+    margin: 4px 0 8px;
+    padding-left: 12px;
+}
+.sidebar a,
+.sidebar a:hover {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+.menu_group {
+    margin: 8px 0;
+}
+.menu_group summary {
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #f5f0ff; /* light purple */
+}
+
+/* ================= HOMEWORK BLOCKS ================= */
+.hw_block {
+    margin-bottom: 40px;
+}
+.hw_title {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background-color: blueviolet;
+    color: white;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
+    scroll-margin-top: 64px;
+}
+.hw_title h2 { margin: 10px 0 4px; }
+.hw_title p { margin: 0; opacity: 0.9; }
+.hw_title small {
+    background-color: white;
+    color: blueviolet;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+/* ================= CARDS (2 x 2 grid) ================= */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    gap: 24px;
+}
+/* if the number of cards is odd, the last one takes the full row */
+.cards article:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+}
+.cards article {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: rgba(0, 0, 0, 0.1) 3px 6px 12px;
+}
+.cards small {
+    background-color: #eef0f6;
+    color: blueviolet;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+.cards li {
+    margin-bottom: 8px;
+}
+.cards article > a {
+    display: inline-block;
+    margin-top: 8px;
+}
+.equation {
+    background-color: #eef0f6;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 50px;
+    overflow-x: auto; /* scroll if the equation is wider than its box */
+}
+
+/* ================= FOOTER ================= */
+.page_footer {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* ================= PHONE (keep this block last) ================= */
+@media screen and (max-width: 768px) {
     .cards {
         grid-template-columns: 1fr;
     }
 }
-/***************************************** 4 Cards Ends  ********************************/

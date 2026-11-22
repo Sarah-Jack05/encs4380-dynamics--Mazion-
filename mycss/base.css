@@ -44,7 +44,6 @@ a:hover {
     padding: 0 20px 0 76px; /* left space = room for the burger button */
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.08) 0 2px 10px;
     z-index: 997; /* under the menu layers (998, 999) and the burger (1001) */
@@ -57,7 +56,7 @@ a:hover {
     padding: 0;
     background: none;
     color: #222;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.05rem;
 }
 .brand_mark {
@@ -70,34 +69,48 @@ a:hover {
     color: white;
     font-weight: bold;
 }
-.topbar_links {
-    display: flex;
-    gap: 8px;
-}
-.topbar_links a,
-.topbar_links a:hover {
-    padding: 8px 14px;
-    border-radius: 999px;
-}
 
-/* ================= LANDING PAGE HERO (the page heading) ================= */
+/* ================= LANDING PAGE HERO (the page heading, centered) ================= */
 .page_header {
-    margin: 0 -16px 32px;     /* -16px cancels the body side padding: full width */
-    padding: 128px 16px 72px; /* the top 72px sit under the fixed top bar */
+    position: relative;
+    overflow: hidden;            /* clips the decorative rings below */
+    margin: 0 -16px 32px;        /* -16px cancels the body side padding: full width */
+    padding: 124px 16px 68px;    /* the top 72px sit under the fixed top bar */
     border-radius: 0 0 36px 36px;
     color: white;
+    text-align: center;
     background:
+        radial-gradient(rgba(255, 255, 255, 0.10) 1.5px, transparent 1.6px) 0 0 / 26px 26px, /* dot grid */
         radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0) 38%),
         radial-gradient(circle at 90% 85%, rgba(255, 255, 255, 0.10) 0, rgba(255, 255, 255, 0) 40%),
         linear-gradient(135deg, #2e1065 0%, #6d28d9 55%, blueviolet 100%);
 }
+/* two big faint rings that fill the empty left and right sides */
+.page_header::before,
+.page_header::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    pointer-events: none;
+}
+.page_header::before {
+    width: 380px;
+    height: 380px;
+    right: -110px;
+    top: 36px;
+}
+.page_header::after {
+    width: 240px;
+    height: 240px;
+    left: -70px;
+    bottom: -90px;
+}
 .hero_inner {
-    max-width: 1100px;
+    position: relative;
+    z-index: 1;                  /* above the rings */
+    max-width: 780px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: 40px;
-    align-items: center;
 }
 .hero_pill {
     display: inline-block;
@@ -110,65 +123,31 @@ a:hover {
 }
 .page_header h1 {
     margin: 0 0 16px;
-    font-size: clamp(2.2rem, 5vw, 3.6rem); /* grows with the screen, with a min and a max */
-    line-height: 1.1;
-    font-weight: 800;
+    font-size: clamp(1.9rem, 4.4vw, 3rem); /* smaller than before; still grows with the screen */
+    line-height: 1.15;
+    font-weight: 600;                      /* was 800: lighter */
+    letter-spacing: -0.01em;
 }
 .hero_accent {
     color: #f0abfc; /* light pink-purple */
 }
 .hero_lead {
-    max-width: 34rem;
-    margin: 0 0 28px;
-    font-size: 1.15rem;
-    line-height: 1.55;
-    color: rgba(255, 255, 255, 0.9);
+    max-width: 36rem;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.88);
 }
-.hero_buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-.hero_btn,
-.hero_btn:hover {
-    display: inline-block;
-    padding: 12px 22px;
-    border-radius: 999px;
-    font-weight: bold;
-}
-.hero_btn_main,
-.hero_btn_main:hover {
-    background-color: white;
-    color: #5b21b6;
-}
-.hero_btn_main:hover {
-    background-color: #f5f0ff;
-}
-.hero_btn_alt,
-.hero_btn_alt:hover {
-    background-color: transparent;
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    padding: 10px 20px; /* 2px less, to make room for the border */
-}
-.hero_btn_alt:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-.hero_team {
-    margin: 24px 0 0;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.75);
-}
-.hero_visual {
-    padding: 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background-color: rgba(255, 255, 255, 0.10);
-}
-.hero_visual svg {
+/* a short accent line under the text */
+.hero_lead::after {
+    content: "";
     display: block;
-    width: 100%;
-    height: auto;
+    width: 64px;
+    height: 4px;
+    margin: 28px auto 0;
+    border-radius: 999px;
+    background-color: #f0abfc;
 }
 
 /* ================= BURGER BUTTON + SIDEBAR (no JavaScript needed) =================
@@ -350,15 +329,18 @@ a:hover {
     .cards {
         grid-template-columns: 1fr;
     }
-    .hero_inner {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 28px;
-    }
     .page_header {
         padding-top: 104px;
         padding-bottom: 48px;
     }
-    .topbar_links {
-        display: none; /* the burger menu is enough on a phone */
+    .page_header::before {
+        width: 240px;
+        height: 240px;
+        right: -100px;
+    }
+    .page_header::after {
+        width: 160px;
+        height: 160px;
+        bottom: -70px;
     }
 }

@@ -13,7 +13,7 @@ id    for connecting Python
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HW1: Dynamic Characteristics Toolkit</title>
+    <title>ENCS4380 Toolkit: HW1 Dynamics and HW2 PID Control</title>
     <link rel="stylesheet" href="mycss/base.css" />
     <link rel="stylesheet" href="mycss/simulation.css" />
     <!--load the css for math display-->
@@ -46,420 +46,1274 @@ id    for connecting Python
       rel="stylesheet"
       href="https://pyscript.net/releases/2026.7.1/core.css"
     />
-    <!--core.css is the style for PyScript’s own parts.-->
+    <!--core.css is the style for PyScript's own parts.-->
     <script
       type="module"
       src="https://pyscript.net/releases/2026.7.1/core.js"
     ></script>
     <!--core.js is the engine that downloads Python into the page.-->
+
+    <!--packages = Python libraries to download.
+        [files]  = "where the file is" = "the name Python sees".
+        This is what makes "from module1 import ..." and "from pid_core import ..." work.
+        (pid_core_p1_p4.py is shown to Python under the name pid_core.py)-->
+    <py-config>
+      packages = ["numpy", "matplotlib"] [files] "./HW1/module1.py" =
+      "./module1.py" "./HW1/module2.py" = "./module2.py" "./HW1/module3.py" =
+      "./module3.py" "./HW2/pid_core_p1_p4.py" = "./pid_core.py"
+    </py-config>
   </head>
+
   <body>
-    <header class="page_header" id="top">
-      <h1>Dynamic Characteristics Toolkit</h1>
-      <p>ENCS4380 Homework 1: see how a sensor reports the past, smoothed.</p>
-      <nav>
+    <!-- ======================= BURGER BUTTON + SIDEBAR ======================= -->
+    <!-- hidden checkbox = remembers open/closed. The label is the button. -->
+    <input type="checkbox" id="menu_toggle" class="menu_toggle" />
+    <label for="menu_toggle" class="burger" aria-label="Open the menu"
+      >☰</label
+    >
+    <label for="menu_toggle" class="overlay"></label>
+
+    <nav class="sidebar" aria-label="Site menu">
+      <h2>Menu</h2>
+      <a href="#top">Home</a>
+
+      <details class="menu_group">
+        <summary>HW1 — Dynamics</summary>
         <ul>
-          <li><a href="#m1">Module 1</a></li>
-          <li><a href="#m2">Module 2</a></li>
-          <li><a href="#m3">Module 3</a></li>
-          <li><a href="#m4">Module 4</a></li>
-          <li><a href="#valid">Validation</a></li>
+          <li><a href="#hw1">Overview</a></li>
+          <li><a href="#m1">Module 1: Time response</a></li>
+          <li><a href="#m2">Module 2: Frequency response</a></li>
+          <li><a href="#m3">Module 3: Second order</a></li>
+          <li><a href="#m4">Module 4: Guess the sensor</a></li>
+          <li><a href="#valid_hw1">Validation</a></li>
         </ul>
-      </nav>
-    </header>
-    <!------------------------------------ CARDS START ------------------------------------->
-    <main class="cards">
-      <article>
-        <header><small>Module 1</small></header>
-        <h2>First-Order Time Response</h2>
-        <div class="equation">
-          $$\tau \dot{y} + y = Kx$$ $$G(s) = \frac{K}{\tau s + 1}$$
-        </div>
-
-        <ul>
-          <li>$x$: input (the tea temperature)</li>
-          <li>$y$: output (the thermometer reading)</li>
-          <li>$K$: steady-state gain (how much $y$ ends up per unit of $x$)</li>
-          <li>
-            $\tau$: time constant (time to reach 63.2% of the final change)
-          </li>
-        </ul>
-        <a href="#m1">Launch Simulator</a>
-      </article>
-
-      <article>
-        <header><small>Module 2</small></header>
-        <h2>First-Order Frequency Response</h2>
-        <div class="equation">
-          $$M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$$ $$\phi =
-          -\tan^{-1}(\omega\tau)$$
-        </div>
-
-        <ul>
-          <li>$M$: amplitude ratio</li>
-          <li>$\phi$: phase lag</li>
-          <li>$\omega$: input frequency</li>
-          <li>$\tau$: time constant</li>
-        </ul>
-        <a href="#m2">Launch Simulator</a>
-      </article>
-
-      <article>
-        <header><small>Module 3</small></header>
-        <h2>Second-Order Response</h2>
-        <div class="equation">
-          $$G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$$
-        </div>
-
-        <ul>
-          <li>$\zeta$: damping ratio</li>
-          <li>$\omega_n$: natural frequency</li>
-          <li>$K$: gain</li>
-        </ul>
-        <a href="#m3">Launch Simulator</a>
-      </article>
-
-      <article>
-        <header><small>Module 4</small></header>
-        <h2>Guess the Sensor</h2>
-        <div class="equation">
-          <p>The Game Rules</p>
-        </div>
-        <ol>
-          <li>Press "New sensor": a hidden sensor is picked at random.</li>
-          <li>
-            Look at the noisy curve. A smooth rise is first-order. A curve that
-            overshoots and wiggles is second-order.
-          </li>
-          <li>
-            First-order: τ is the time when the curve reaches 63.2% of its final
-            value.
-          </li>
-          <li>
-            Second-order: estimate ζ from the overshoot, then ωn from how fast
-            it oscillates.
-          </li>
-          <li>Type your guess and press "Submit guess".</li>
-          <li>The true values appear, and you get a score.</li>
-        </ol>
-        <a href="#m4">Launch Simulator</a>
-      </article>
-    </main>
-    <!------------------------------------ CARDS END ------------------------------------->
-
-    <!------------------------------------ SIMULATION STARTS ------------------------------------->
-    <section id="m1">
-      <h2>Module 1: First-Order Time Response</h2>
-      <div class="predict">
-        <p>
-          <strong>Predict, then check:</strong> if you double τ, what happens to
-          the time the sensor needs to reach 63.2%?
-        </p>
-        <textarea
-          name="predict"
-          id="predict"
-          placeholder="write your prediction here"
-        ></textarea>
-        <details>
-          <summary><strong>Check</strong></summary>
-          <p>
-            It doubles. The curve reaches 63.2% of its final value at t = τ, so
-            a bigger τ means a slower sensor.
-          </p>
-        </details>
-      </div>
-      <div class="container">
-        <div class="plot1" id="plot1"></div>
-        <div class="output_values">
-          <h3>Values</h3>
-          <ul>
-            <li>y(τ) = <span id="val_tau"></span></li>
-            <li>y(3τ) = <span id="val_3tau"></span></li>
-            <li>Ramp lag = <span id="val_ramp_lag"></span></li>
-            <li>Steady-state error = <span id="val_sse"></span></li>
-          </ul>
-        </div>
-      </div>
-      <!-- error-fraction plot on a log axis -->
-      <div class="plot1_error" id="plot1_error" hidden></div>
-      <div class="sliders">
-        <label for="k">K:<output id="k_out">1</output></label>
-        <input
-          type="range"
-          name="k"
-          id="k"
-          min="0.1"
-          max="10"
-          step="0.1"
-          value="1"
-        />
-
-        <label for="tau">τ (sec):<output id="tau_out">10</output></label>
-        <input
-          type="range"
-          name="tau"
-          id="tau"
-          min="0.1"
-          max="20"
-          step="0.1"
-          value="10"
-        />
-
-        <label for="step"
-          ><input
-            id="step"
-            type="radio"
-            name="input"
-            value="step"
-            checked
-          />Step</label
-        >
-        <label for="ramp"
-          ><input id="ramp" type="radio" name="input" value="ramp" />Ramp</label
-        >
-        <br />
-        <label for="error"
-          ><input id="error" type="checkbox" name="error" />Show Error
-          Plot</label
-        >
-
-        <p><a href="#top" class="back">↑ Back to modules</a></p>
-      </div>
-    </section>
-    <section id="m2">
-      <h2>Module 2: First-Order Frequency Response</h2>
-      <div class="predict">
-        <p>
-          <strong>Predict, then check:</strong> if τ gets bigger and the input
-          frequency stays the same, what happens to the amplitude and to the
-          phase lag?
-        </p>
-        <textarea
-          placeholder="write your prediction here"
-        ></textarea>
-        <details>
-          <summary><strong>Check</strong></summary>
-          <p>
-            The amplitude gets smaller and the phase lag gets bigger. Both
-            formulas use ωτ, and a bigger τ makes ωτ bigger. Example: τ = 0.2 s
-            and ω = 2 rad/s give an amplitude ratio of 0.93 and a lag of 21.8°.
-          </p>
-        </details>
-      </div>
-      <div class="container">
-        <div class="plot2" id="plot2"></div>
-        <div class="output_values">
-          <h3>Values</h3>
-          <ul>
-            <li>Amplitude ratio M = <span id="val_M"></span></li>
-            <li>Phase lag φ = <span id="val_phase"></span></li>
-            <li>Cutoff ω = 1/τ = <span id="val_cutoff"></span></li>
-            <li>Dynamic error δ = M − 1 = <span id="val_delta"></span></li>
-          </ul>
-        </div>
-      </div>
-            <div class="sliders">
-        <label for="tau2">τ (sec):<output id="tau2_out">0.2</output></label>
-        <input type="range" id="tau2" min="0.1" max="20" step="0.1" value="0.2" />
-
-        <label for="w2">ω (rad/s): <output id="w2_out">2</output></label>
-        <input type="range" id="w2" min="0.1" max="20" step="0.1" value="2" />
-        <br />
-      </div>
-      <div class="bode" id="bode"></div>
-
-
-      <!--Dynamic-Error Calculator-->
-      <div class="calc">
-        <h3>Dynamic-error calculator</h3>
-        <div class="sliders">
-          <label for="calc_f">Highest signal frequency (Hz)</label>
-          <input type="number" id="calc_f" value="100" min="0.1" /><br>
-          <label for="calc_err">Allowed error (%)</label>
-          <input type="number" id="calc_err" value="5" min="0.1" max="50" /><br>
-          <label for="calc_fphase">Check phase lag at (Hz)</label>
-          <input type="number" id="calc_fphase" value="50" min="0.1" />
-        </div>
-        <div class="m2EndCalc">
-            <p>Largest allowed τ = <span id="calc_taumax"></span></p>
-            <p>Phase lag at that frequency = <span id="calc_phase"></span></p>
-        </div>
-   
-      </div>
-      <p><a href="#top" class="back">↑ Back to modules</a></p>
-    </section>
-
-    <section id="m3">
-      <h2>Module 3: Second-Order Response</h2>
-      <div class="predict">
-        <p>
-          <strong>Predict, then check:</strong> if you lower the damping b, what happens to the overshoot?
-        </p>
-        <textarea
-          placeholder="write your prediction here"
-        ></textarea>
-        <details>
-          <summary><strong>Check</strong></summary>
-          <p>
-            The overshoot grows. The damping ratio is ζ = b / (2√(km)), so a smaller b gives a smaller ζ. With ζ = 0.5 the overshoot is 16.3%, and with ζ = 1 there is none.
-          </p>
-        </details>
-      </div>
-      <div class="container">
-        <div class="plot3" id="plot3"></div>
-        <div class="output_values">
-          <h3>Values</h3>
-          <ul>
-            <li>Damping ratio ζ  = <span id="val_zeta"></span></li>
-            <li>Natural frequency ωn = <span id="val_wn"></span></li>
-            <li>Rise time = <span id="val_rise"></span></li>
-            <li>Peak time = <span id="val_peak"></span></li>
-            <li>Overshoot = <span id="val_os"></span></li>
-            <li>Settling time = <span id="val_settle"></span></li>
-          </ul>
-        </div>
-      </div>
-         <div class="sliders">
-        <label for="mass">Mass m:<output id="mass_out">1</output></label>
-        <input type="range" id="mass" min="0.1" max="20" step="0.1" value="1" />
-
-        <label for="b">Damping b: <output id="b_out">2</output></label>
-        <input type="range" id="b" min="0.1" max="20" step="0.1" value="2" /><br>
-
-        <label for="spring">Spring k: <output id="spring_out">4</output></label>
-        <input type="range" id="spring" min="0.1" max="20" step="0.1" value="4" />
-      </div>
-      <br>
-    <div class="plotSD">
-        <div class="plot3" id="splane"></div>
-        <div class="plot3" id="phase"></div>
-    </div>
-      <!--State-space Form-->
-      <div class="state_space">
-        <h3>State-space form</h3>
-        <div class="equation">
-            <p>$x_1 = x$, $x_2 = \dot{x}$, $\dot{\mathbf{x}} = A\mathbf{x} + B F(t)$, $y = C\mathbf{x}$</p>
-        </div>
-        <div class="state_space_table"><br>
-            <span>A =</span>
-            <table class="matrix">
-                <tr>
-                    <td>0</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td id="ss_a21"></td>
-                    <td id="ss_a22"></td>
-                </tr>
-            </table>
-            <span>B =</span>
-            <table class="matrix">
-                <tr>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td id="ss_b2"></td>
-                </tr>
-            </table>
-            <span>C =</span>
-            <table class="matrix">
-                <tr>
-                    <td>1</td>
-                    <td>0</td>
-                </tr>
-            </table>
-        </div>
-            <p>Eigenvalues of A: <span id="ss_eig1">–</span> and <span id="ss_eig2">–</span></p>
-            <p>Poles of G(s): <span id="ss_pole1">–</span> and <span id="ss_pole2">–</span></p>        
-      </div>
-      <p><a href="#top" class="back">↑ Back to modules</a></p>
-    </section>
-
-
-    <section id="m4">
-        <h2>Module 4: Guess the Sensor</h2>
-        <p>A hidden sensor is picked at random and a noisy response is drawn. Read the curve, then estimate its parameters. The true values appear only after you submit.</p>
-        
-        <div class="container">
-        <div class="plot4" id="plot4"></div>
-        <div class="side_list">
-          <h3>Your guess</h3>
-          <p>Input shown: <span id="sensor_info">–</span></p>
-          <div class="sliders">
-            <label for="guess_tau">τ (first-order)</label>
-            <input type="number" id="guess_tau" step="0.01" min="0" /><br>
-            <label for="guess_zeta">ζ (second-order)</label>
-            <input type="number" id="guess_zeta" step="0.01" min="0" /><br>
-            <label for="guess_wn">ωn (rad/s)</label>
-            <input type="number" id="guess_wn" step="0.01" min="0" />
-          </div>
-          <button type="button" id="btn_submit">Submit guess</button>
-        </div>
-      </div>
-       <details class="hint">
-        <summary>Hint</summary>
-        <p>First order: at t = τ the curve is at 63.2% of its final value.</p>
-        <p>Second order: the overshoot depends only on ζ.</p>
       </details>
-        <div id="output_values" class="output_values" hidden>
-        <h3>True values</h3>
-        <p>τ = <span id="true_tau">–</span></p>
-        <p>ζ = <span id="true_zeta">–</span></p>
-        <p>ωn = <span id="true_wn">–</span></p>
-        <p>This round: <span id="score_round">–</span></p>
+
+      <details class="menu_group">
+        <summary>HW2 — PID Control</summary>
+        <ul>
+          <li><a href="#hw2">Overview</a></li>
+          <li><a href="#p1">P1: PID playground</a></li>
+          <li><a href="#p2">P2: Slow sensor</a></li>
+          <li><a href="#p3">P3: Digital PID</a></li>
+          <li><a href="#p4">P4: Tuning challenge</a></li>
+          <li><a href="#my_sys">My System</a></li>
+          <li><a href="#valid_hw2">Validation</a></li>
+        </ul>
+      </details>
+    </nav>
+
+    <!-- ======================= GREETING HEADER ======================= -->
+    <header class="page_header" id="top">
+      <h1>Welcome to the ENCS4380 Toolkit</h1>
+      <p>Interfacing Techniques, Birzeit University</p>
+      <p>
+        Homework 1: see how a sensor reports the past, smoothed. Homework 2:
+        make the system faster and more accurate with feedback.
+      </p>
+      <p>Open the ☰ menu on the left to jump to any module.</p>
+    </header>
+
+    <main>
+      <!-- ======================================================================= -->
+      <!-- ============================ HOMEWORK 1 =============================== -->
+      <!-- ======================================================================= -->
+      <div class="hw_block" id="hw1">
+        <div class="hw_title">
+          <small>Homework 1</small>
+          <h2>Dynamics: Dynamic Characteristics Toolkit</h2>
+          <p>See how a sensor reports the past, smoothed.</p>
+        </div>
+
+        <!------------------------------------ HW1 CARDS ------------------------------------->
+        <div class="cards">
+          <article>
+            <header><small>Module 1</small></header>
+            <h2>First-Order Time Response</h2>
+            <div class="equation">
+              $$\tau \dot{y} + y = Kx$$ $$G(s) = \frac{K}{\tau s + 1}$$
+            </div>
+            <ul>
+              <li>$x$: input (the tea temperature)</li>
+              <li>$y$: output (the thermometer reading)</li>
+              <li>
+                $K$: steady-state gain (how much $y$ ends up per unit of $x$)
+              </li>
+              <li>
+                $\tau$: time constant (time to reach 63.2% of the final change)
+              </li>
+            </ul>
+            <a href="#m1">Launch Simulator</a>
+          </article>
+
+          <article>
+            <header><small>Module 2</small></header>
+            <h2>First-Order Frequency Response</h2>
+            <div class="equation">
+              $$M = \frac{1}{\sqrt{1+(\omega\tau)^2}}$$ $$\phi =
+              -\tan^{-1}(\omega\tau)$$
+            </div>
+            <ul>
+              <li>$M$: amplitude ratio</li>
+              <li>$\phi$: phase lag</li>
+              <li>$\omega$: input frequency</li>
+              <li>$\tau$: time constant</li>
+            </ul>
+            <a href="#m2">Launch Simulator</a>
+          </article>
+
+          <article>
+            <header><small>Module 3</small></header>
+            <h2>Second-Order Response</h2>
+            <div class="equation">
+              $$G(s)=\frac{K\omega_n^2}{s^2+2\zeta\omega_n s+\omega_n^2}$$
+            </div>
+            <ul>
+              <li>$\zeta$: damping ratio</li>
+              <li>$\omega_n$: natural frequency</li>
+              <li>$K$: gain</li>
+            </ul>
+            <a href="#m3">Launch Simulator</a>
+          </article>
+
+          <article>
+            <header><small>Module 4</small></header>
+            <h2>Guess the Sensor</h2>
+            <div class="equation">
+              <p>The Game Rules</p>
+            </div>
+            <ol>
+              <li>Press "New sensor": a hidden sensor is picked at random.</li>
+              <li>
+                Look at the noisy curve. A smooth rise is first-order. A curve
+                that overshoots and wiggles is second-order.
+              </li>
+              <li>
+                First-order: τ is the time when the curve reaches 63.2% of its
+                final value.
+              </li>
+              <li>
+                Second-order: estimate ζ from the overshoot, then ωn from how
+                fast it oscillates.
+              </li>
+              <li>Type your guess and press "Submit guess".</li>
+              <li>The true values appear, and you get a score.</li>
+            </ol>
+            <a href="#m4">Launch Simulator</a>
+          </article>
+        </div>
+
+        <!------------------------------------ HW1 MODULE 1 ------------------------------------->
+        <section id="m1">
+          <h2>Module 1: First-Order Time Response</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> if you double τ, what
+              happens to the time the sensor needs to reach 63.2%?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                It doubles. The curve reaches 63.2% of its final value at t = τ,
+                so a bigger τ means a slower sensor.
+              </p>
+            </details>
+          </div>
+          <div class="container">
+            <div class="plot1" id="plot1"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>y(τ) = <span id="val_tau"></span></li>
+                <li>y(3τ) = <span id="val_3tau"></span></li>
+                <li>Ramp lag = <span id="val_ramp_lag"></span></li>
+                <li>Steady-state error = <span id="val_sse"></span></li>
+              </ul>
+            </div>
+          </div>
+          <!-- error-fraction plot on a log axis -->
+          <div class="plot1_error" id="plot1_error" hidden></div>
+          <div class="sliders">
+            <label for="k">K:<output id="k_out">1</output></label>
+            <input
+              type="range"
+              name="k"
+              id="k"
+              min="0.1"
+              max="10"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="tau">τ (sec):<output id="tau_out">10</output></label>
+            <input
+              type="range"
+              name="tau"
+              id="tau"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="10"
+            />
+
+            <label for="step"
+              ><input
+                id="step"
+                type="radio"
+                name="input"
+                value="step"
+                checked
+              />Step</label
+            >
+            <label for="ramp"
+              ><input
+                id="ramp"
+                type="radio"
+                name="input"
+                value="ramp"
+              />Ramp</label
+            >
+            <br />
+            <label for="error"
+              ><input id="error" type="checkbox" name="error" />Show Error
+              Plot</label
+            >
+
+            <p><a href="#top" class="back">↑ Back to modules</a></p>
+          </div>
+        </section>
+
+        <!------------------------------------ HW1 MODULE 2 ------------------------------------->
+        <section id="m2">
+          <h2>Module 2: First-Order Frequency Response</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> if τ gets bigger and the
+              input frequency stays the same, what happens to the amplitude and
+              to the phase lag?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                The amplitude gets smaller and the phase lag gets bigger. Both
+                formulas use ωτ, and a bigger τ makes ωτ bigger. Example: τ =
+                0.2 s and ω = 2 rad/s give an amplitude ratio of 0.93 and a lag
+                of 21.8°.
+              </p>
+            </details>
+          </div>
+          <div class="container">
+            <div class="plot2" id="plot2"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>Amplitude ratio M = <span id="val_M"></span></li>
+                <li>Phase lag φ = <span id="val_phase"></span></li>
+                <li>Cutoff ω = 1/τ = <span id="val_cutoff"></span></li>
+                <li>Dynamic error δ = M − 1 = <span id="val_delta"></span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="sliders">
+            <label for="tau2">τ (sec):<output id="tau2_out">0.2</output></label>
+            <input
+              type="range"
+              id="tau2"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="0.2"
+            />
+
+            <label for="w2">ω (rad/s): <output id="w2_out">2</output></label>
+            <input
+              type="range"
+              id="w2"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="2"
+            />
+            <br />
+          </div>
+          <div class="bode" id="bode"></div>
+
+          <!--Dynamic-Error Calculator-->
+          <div class="calc">
+            <h3>Dynamic-error calculator</h3>
+            <div class="sliders">
+              <label for="calc_f">Highest signal frequency (Hz)</label>
+              <input type="number" id="calc_f" value="100" min="0.1" /><br />
+              <label for="calc_err">Allowed error (%)</label>
+              <input
+                type="number"
+                id="calc_err"
+                value="5"
+                min="0.1"
+                max="50"
+              /><br />
+              <label for="calc_fphase">Check phase lag at (Hz)</label>
+              <input type="number" id="calc_fphase" value="50" min="0.1" />
+            </div>
+            <div class="m2EndCalc">
+              <p>Largest allowed τ = <span id="calc_taumax"></span></p>
+              <p>Phase lag at that frequency = <span id="calc_phase"></span></p>
+            </div>
+          </div>
+          <p><a href="#top" class="back">↑ Back to modules</a></p>
+        </section>
+
+        <!------------------------------------ HW1 MODULE 3 ------------------------------------->
+        <section id="m3">
+          <h2>Module 3: Second-Order Response</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> if you lower the damping b,
+              what happens to the overshoot?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                The overshoot grows. The damping ratio is ζ = b / (2√(km)), so a
+                smaller b gives a smaller ζ. With ζ = 0.5 the overshoot is
+                16.3%, and with ζ = 1 there is none.
+              </p>
+            </details>
+          </div>
+          <div class="container">
+            <div class="plot3" id="plot3"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>Damping ratio ζ = <span id="val_zeta"></span></li>
+                <li>Natural frequency ωn = <span id="val_wn"></span></li>
+                <li>Rise time = <span id="val_rise"></span></li>
+                <li>Peak time = <span id="val_peak"></span></li>
+                <li>Overshoot = <span id="val_os"></span></li>
+                <li>Settling time = <span id="val_settle"></span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="sliders">
+            <label for="mass">Mass m:<output id="mass_out">1</output></label>
+            <input
+              type="range"
+              id="mass"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="b">Damping b: <output id="b_out">2</output></label>
+            <input
+              type="range"
+              id="b"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="2"
+            /><br />
+
+            <label for="spring"
+              >Spring k: <output id="spring_out">4</output></label
+            >
+            <input
+              type="range"
+              id="spring"
+              min="0.1"
+              max="20"
+              step="0.1"
+              value="4"
+            />
+          </div>
+          <div class="plotSD">
+            <div class="plot3" id="splane"></div>
+            <div class="plot3" id="phase"></div>
+          </div>
+          <!--State-space Form-->
+          <div class="state_space">
+            <h3>State-space form</h3>
+            <div class="equation">
+              <p>
+                $x_1 = x$, $x_2 = \dot{x}$, $\dot{\mathbf{x}} = A\mathbf{x} + B
+                F(t)$, $y = C\mathbf{x}$
+              </p>
+            </div>
+            <div class="state_space_table">
+              <span>A =</span>
+              <table class="matrix">
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td id="ss_a21"></td>
+                  <td id="ss_a22"></td>
+                </tr>
+              </table>
+              <span>B =</span>
+              <table class="matrix">
+                <tr>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td id="ss_b2"></td>
+                </tr>
+              </table>
+              <span>C =</span>
+              <table class="matrix">
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+              </table>
+            </div>
+            <p>
+              Eigenvalues of A: <span id="ss_eig1">–</span> and
+              <span id="ss_eig2">–</span>
+            </p>
+            <p>
+              Poles of G(s): <span id="ss_pole1">–</span> and
+              <span id="ss_pole2">–</span>
+            </p>
+          </div>
+          <p><a href="#top" class="back">↑ Back to modules</a></p>
+        </section>
+
+        <!------------------------------------ HW1 MODULE 4 ------------------------------------->
+        <section id="m4">
+          <h2>Module 4: Guess the Sensor</h2>
+          <p>
+            A hidden sensor is picked at random and a noisy response is drawn.
+            Read the curve, then estimate its parameters. The true values appear
+            only after you submit.
+          </p>
+
+          <div class="container">
+            <div class="plot4" id="plot4"></div>
+            <div class="output_values">
+              <h3>Your guess</h3>
+              <p>Input shown: <span id="sensor_info">–</span></p>
+              <div class="sliders">
+                <label for="guess_tau">τ (first-order)</label>
+                <input type="number" id="guess_tau" step="0.01" min="0" /><br />
+                <label for="guess_zeta">ζ (second-order)</label>
+                <input
+                  type="number"
+                  id="guess_zeta"
+                  step="0.01"
+                  min="0"
+                /><br />
+                <label for="guess_wn">ωn (rad/s)</label>
+                <input type="number" id="guess_wn" step="0.01" min="0" />
+              </div>
+              <button type="button" id="btn_submit">Submit guess</button>
+            </div>
+          </div>
+          <details class="hint">
+            <summary>Hint</summary>
+            <p>
+              First order: at t = τ the curve is at 63.2% of its final value.
+            </p>
+            <p>Second order: the overshoot depends only on ζ.</p>
+          </details>
+          <!-- reveal box: module4.py removes "hidden" after the guess -->
+          <div id="output_values" class="output_values" hidden>
+            <h3>True values</h3>
+            <p>τ = <span id="true_tau">–</span></p>
+            <p>ζ = <span id="true_zeta">–</span></p>
+            <p>ωn = <span id="true_wn">–</span></p>
+            <p>This round: <span id="score_round">–</span></p>
+          </div>
+
+          <p class="score">Session score: <span id="score_total">0</span></p>
+          <button type="button" id="btn_new">New sensor</button><br />
+          <a class="back" href="#top">↑ Back to modules</a>
+        </section>
+
+        <!------------------------------------ HW1 VALIDATION ------------------------------------->
+        <section id="valid_hw1">
+          <h2>Validation checks (HW1)</h2>
+          <p>
+            Each result is compared with the expected value from the lecture
+            slides.
+          </p>
+          <div class="table_wrap">
+            <table class="validation_table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Check</th>
+                  <th>Expected</th>
+                  <th>Your value</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>First-order step</td>
+                  <td>y(τ) = 0.632 KA and y(3τ) = 0.95 KA</td>
+                  <td id="v1_mine">–</td>
+                  <td id="v1_res">–</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>τ = 0.2 s, input sin 2t</td>
+                  <td>amplitude 0.93, lag 21.8°</td>
+                  <td id="v2_mine">–</td>
+                  <td id="v2_res">–</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>100 Hz signals, at most 5% error</td>
+                  <td>τmax ≈ 0.52 ms, lag 9.3° at 50 Hz</td>
+                  <td id="v3_mine">–</td>
+                  <td id="v3_res">–</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Second order, ζ = 0.5</td>
+                  <td>overshoot = 16.3%</td>
+                  <td id="v4_mine">–</td>
+                  <td id="v4_res">–</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Second order, ζ = 1</td>
+                  <td>no overshoot</td>
+                  <td id="v5_mine">–</td>
+                  <td id="v5_res">–</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>State space, m = 1, b = 2, k = 4</td>
+                  <td>eigenvalues of A = −1 ± j1.732 = poles</td>
+                  <td id="v6_mine">–</td>
+                  <td id="v6_res">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p><a class="back" href="#top">↑ Back to modules</a></p>
+        </section>
       </div>
+      <!-- ============================ END HOMEWORK 1 ============================ -->
 
-      <p class="score">Session score: <span id="score_total">0</span></p>
-      <button type="button" id="btn_new">New sensor</button><br>
-      <a class="back" href="#top">↑ Back to modules</a>
+      <!-- ======================================================================= -->
+      <!-- ============================ HOMEWORK 2 =============================== -->
+      <!-- ======================================================================= -->
+      <div class="hw_block" id="hw2">
+        <div class="hw_title">
+          <small>Homework 2</small>
+          <h2>PID Control Toolkit</h2>
+          <p>Make the system faster and more accurate with feedback.</p>
+        </div>
 
-    </section>
-<!---------------------------------------Valid section ---------------------------------->
-    <section id="valid">
-        <h2>Validation checks</h2>
-        <p>Each result is compared with the expected value from the lecture slides.</p>
-              <div class="table_wrap">
-        <table class="validation_table">
-          <thead>
-            <tr><th>#</th><th>Check</th><th>Expected</th><th>Your value</th><th>Result</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>First-order step</td><td>y(τ) = 0.632 KA and y(3τ) = 0.95 KA</td><td id="v1_mine">–</td><td id="v1_res">–</td></tr>
-            <tr><td>2</td><td>τ = 0.2 s, input sin 2t</td><td>amplitude 0.93, lag 21.8°</td><td id="v2_mine">–</td><td id="v2_res">–</td></tr>
-            <tr><td>3</td><td>100 Hz signals, at most 5% error</td><td>τmax ≈ 0.52 ms, lag 9.3° at 50 Hz</td><td id="v3_mine">–</td><td id="v3_res">–</td></tr>
-            <tr><td>4</td><td>Second order, ζ = 0.5</td><td>overshoot = 16.3%</td><td id="v4_mine">–</td><td id="v4_res">–</td></tr>
-            <tr><td>5</td><td>Second order, ζ = 1</td><td>no overshoot</td><td id="v5_mine">–</td><td id="v5_res">–</td></tr>
-            <tr><td>6</td><td>State space, m = 1, b = 2, k = 4</td><td>eigenvalues of A = −1 ± j1.732 = poles</td><td id="v6_mine">–</td><td id="v6_res">–</td></tr>
-          </tbody>
-        </table>
-      </div><br>
-        <a class="back" href="#top">↑ Back to modules</a>
+        <!------------------------------------ HW2 CARDS ------------------------------------->
+        <div class="cards">
+          <article>
+            <header><small>P1</small></header>
+            <h2>PID Playground</h2>
+            <div class="equation">
+              $$u(t) = K_p\,e(t) + K_i\int e\,dt + K_d\,\dot{e}(t)$$
+            </div>
+            <ul>
+              <li>$K_p$: proportional gain (faster, but leaves an error)</li>
+              <li>$K_i$: integral gain (removes the steady-state error)</li>
+              <li>$K_d$: derivative gain (calms the overshoot)</li>
+            </ul>
+            <a href="#p1">Launch Simulator</a>
+          </article>
 
-    </section>
+          <article>
+            <header><small>P2</small></header>
+            <h2>A Slow Sensor in the Loop</h2>
+            <div class="equation">$$G_s(s) = \frac{1}{\tau_s s + 1}$$</div>
+            <ul>
+              <li>
+                $\tau_s$: time constant of the sensor in the feedback path
+              </li>
+              <li>The true output and what the sensor reports</li>
+              <li>A bigger $\tau_s$ means more overshoot, then oscillation</li>
+            </ul>
+            <a href="#p2">Launch Simulator</a>
+          </article>
 
-    <!------------------------------------ SIMULATION ENDS ------------------------------------->
+          <article>
+            <header><small>P3</small></header>
+            <h2>Digital PID</h2>
+            <div class="equation">
+              $$u[k] = K_p e[k] + K_i T_s \sum_{j=0}^{k} e[j] + K_d
+              \frac{e[k]-e[k-1]}{T_s}$$
+            </div>
+            <ul>
+              <li>$T_s$: sampling time</li>
+              <li>Anti-windup on or off</li>
+              <li>The Arduino loop code for the current gains</li>
+            </ul>
+            <a href="#p3">Launch Simulator</a>
+          </article>
+
+          <article>
+            <header><small>P4</small></header>
+            <h2>Tuning Challenge</h2>
+            <div class="equation">
+              <p>The Game Rules</p>
+            </div>
+            <ol>
+              <li>
+                A hidden random plant and a spec appear (rise time, overshoot,
+                settling time, steady-state error).
+              </li>
+              <li>Type your gains $K_p$, $K_i$ and $K_d$.</li>
+              <li>Press "Test my gains" and watch the response.</li>
+              <li>Each part of the spec shows PASS or FAIL.</li>
+              <li>
+                Meet every part to score a point, then press "New challenge".
+              </li>
+            </ol>
+            <a href="#p4">Launch Simulator</a>
+          </article>
+
+          <article>
+            <header><small>My System</small></header>
+            <h2>Applying PID to our project</h2>
+            <div class="equation">$$G(s) = \frac{K}{\tau s + 1}$$</div>
+            <ul>
+              <li>The plant model and where $K$ and $\tau$ came from</li>
+              <li>The spec we chose and why it matters</li>
+              <li>Our final gains, the response and the Arduino code</li>
+            </ul>
+            <a href="#my_sys">Open My System</a>
+          </article>
+        </div>
+
+        <!------------------------------------ HW2 P1: PID PLAYGROUND ------------------------------------->
+        <section id="p1">
+          <h2>P1: PID Playground</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> choose the second-order
+              plant and set $K_i = 0$ and $K_d = 0$. If you raise $K_p$ a lot,
+              what happens to the overshoot?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                It grows. For this plant, $K_p = 20$ gives about 27% overshoot
+                and $K_p = 50$ about 54%. A bigger $K_p$ pushes harder toward
+                the setpoint, but nothing slows the motion down. Adding $K_d =
+                5$ brings the 54% down to about 10%. (With the first-order
+                plant, $K_p$ alone never overshoots: $K_p = 9$ leaves a 10%
+                error but no overshoot.)
+              </p>
+            </details>
+          </div>
+
+          <!-- block diagram of the loop (static drawing, no Python needed) -->
+          <div class="diagram">
+            <svg
+              viewBox="0 0 780 190"
+              role="img"
+              aria-label="Block diagram of the closed loop: the setpoint r minus the output y gives the error e, which goes through the PID, the actuator limit and the plant to give y. The output y is fed back to the sum."
+            >
+              <defs>
+                <marker
+                  id="arrow"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+                </marker>
+              </defs>
+              <g fill="none" stroke="currentColor" stroke-width="2">
+                <line
+                  x1="52"
+                  y1="75"
+                  x2="98"
+                  y2="75"
+                  marker-end="url(#arrow)"
+                />
+                <circle cx="120" cy="75" r="22" />
+                <line
+                  x1="142"
+                  y1="75"
+                  x2="198"
+                  y2="75"
+                  marker-end="url(#arrow)"
+                />
+                <rect
+                  x="200"
+                  y="45"
+                  width="110"
+                  height="60"
+                  rx="10"
+                  fill="#f5f0ff"
+                  stroke="blueviolet"
+                />
+                <line
+                  x1="310"
+                  y1="75"
+                  x2="368"
+                  y2="75"
+                  marker-end="url(#arrow)"
+                />
+                <rect
+                  x="370"
+                  y="45"
+                  width="100"
+                  height="60"
+                  rx="10"
+                  fill="#ffffff"
+                />
+                <line
+                  x1="470"
+                  y1="75"
+                  x2="528"
+                  y2="75"
+                  marker-end="url(#arrow)"
+                />
+                <rect
+                  x="530"
+                  y="45"
+                  width="110"
+                  height="60"
+                  rx="10"
+                  fill="#ffffff"
+                />
+                <line
+                  x1="640"
+                  y1="75"
+                  x2="742"
+                  y2="75"
+                  marker-end="url(#arrow)"
+                />
+                <path
+                  d="M 700 75 L 700 160 L 120 160 L 120 98"
+                  marker-end="url(#arrow)"
+                />
+              </g>
+              <circle cx="700" cy="75" r="4" fill="currentColor" />
+              <g
+                fill="currentColor"
+                font-family="system-ui, sans-serif"
+                font-size="15"
+                text-anchor="middle"
+              >
+                <text x="28" y="68">r(t)</text>
+                <text x="104" y="62" font-size="14">+</text>
+                <text x="133" y="116" font-size="16">−</text>
+                <text x="170" y="64">e(t)</text>
+                <text x="255" y="73" font-weight="bold">PID</text>
+                <text x="255" y="93" font-size="12">Kp, Ki, Kd</text>
+                <text x="340" y="64">u(t)</text>
+                <text x="420" y="73" font-weight="bold">Limit</text>
+                <text x="420" y="93" font-size="12">±u_max</text>
+                <text x="499" y="64">u_sat</text>
+                <text x="585" y="73" font-weight="bold">Plant</text>
+                <text x="585" y="93" font-size="12">1st or 2nd order</text>
+                <text x="762" y="81">y(t)</text>
+                <text x="410" y="182" font-size="13">
+                  feedback: y(t) goes back to the sum
+                </text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="container">
+            <div class="plot_p1" id="p1-plot"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>Rise time (s) = <span id="p1-tr">–</span></li>
+                <li>Overshoot (%) = <span id="p1-os">–</span></li>
+                <li>Settling time (s) = <span id="p1-ts">–</span></li>
+                <li>Steady-state error = <span id="p1-ess">–</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sliders">
+            <label for="p1-plant">Plant:</label>
+            <select id="p1-plant">
+              <option value="first_order">First order (K = 1, τ = 1 s)</option>
+              <option value="second_order">
+                Second order (m = 1, b = 2, k = 4)
+              </option>
+            </select>
+            <br />
+
+            <label for="p1-kp">Kp: <output id="p1-kp-val">1.0</output></label>
+            <input
+              type="range"
+              id="p1-kp"
+              min="0"
+              max="50"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="p1-ki">Ki: <output id="p1-ki-val">1.0</output></label>
+            <input
+              type="range"
+              id="p1-ki"
+              min="0"
+              max="20"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="p1-kd">Kd: <output id="p1-kd-val">0.0</output></label>
+            <input
+              type="range"
+              id="p1-kd"
+              min="0"
+              max="10"
+              step="0.1"
+              value="0"
+            />
+            <br />
+
+            <label for="p1-r">Setpoint (step height)</label>
+            <input type="number" id="p1-r" value="1" step="0.1" /><br />
+            <label for="p1-umax">Control limit ± (u_max)</label>
+            <input type="number" id="p1-umax" value="10" min="0.1" step="0.5" />
+
+            <p><a href="#top" class="back">↑ Back to modules</a></p>
+          </div>
+        </section>
+
+        <!------------------------------------ HW2 P2: SLOW SENSOR (skeleton) ------------------------------------->
+        <section id="p2">
+          <h2>P2: A Slow Sensor in the Loop</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> if the sensor time constant
+              $\tau_s$ gets bigger and the PID gains stay the same, what happens
+              to the overshoot?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                It grows, until the loop oscillates. The controller only
+                controls what the sensor says, and a slow sensor reports old
+                values, so the controller keeps pushing after the real output
+                has already reached the target.
+              </p>
+            </details>
+          </div>
+
+          <!-- DELETE this note when the P2 code is ready -->
+          <div class="pillars">
+            <h3>What this module must show</h3>
+            <ol>
+              <li>
+                Sliders for the sensor $\tau_s$ and for $K_p$, $K_i$, $K_d$.
+              </li>
+              <li>
+                One plot with the setpoint, the true output and what the sensor
+                reports.
+              </li>
+              <li>
+                The live overshoot of the true output, and a message when the
+                loop oscillates.
+              </li>
+              <li>
+                A sentence that explains it: "the controller only controls what
+                the sensor says".
+              </li>
+            </ol>
+          </div>
+
+          <div class="container">
+            <div class="plot_p2" id="p2-plot"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>True overshoot (%) = <span id="p2-os">–</span></li>
+                <li>Settling time (s) = <span id="p2-ts">–</span></li>
+                <li>Loop status = <span id="p2-status">–</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sliders">
+            <label for="p2-taus"
+              >Sensor τs (s): <output id="p2-taus-val">0.1</output></label
+            >
+            <input
+              type="range"
+              id="p2-taus"
+              min="0"
+              max="2"
+              step="0.05"
+              value="0.1"
+            />
+
+            <label for="p2-kp">Kp: <output id="p2-kp-val">1.0</output></label>
+            <input
+              type="range"
+              id="p2-kp"
+              min="0"
+              max="50"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="p2-ki">Ki: <output id="p2-ki-val">0.0</output></label>
+            <input
+              type="range"
+              id="p2-ki"
+              min="0"
+              max="20"
+              step="0.1"
+              value="0"
+            />
+
+            <label for="p2-kd">Kd: <output id="p2-kd-val">0.0</output></label>
+            <input
+              type="range"
+              id="p2-kd"
+              min="0"
+              max="10"
+              step="0.1"
+              value="0"
+            />
+
+            <p><a href="#top" class="back">↑ Back to modules</a></p>
+          </div>
+        </section>
+
+        <!------------------------------------ HW2 P3: DIGITAL PID (skeleton) ------------------------------------->
+        <section id="p3">
+          <h2>P3: Digital PID</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> if the sampling time $T_s$
+              gets bigger and the gains stay the same, what happens to the
+              response?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                It gets worse. The control signal is held constant between
+                samples, so the loop reacts late. For a large enough $T_s$ the
+                response overshoots and then becomes unstable.
+              </p>
+            </details>
+          </div>
+
+          <!-- DELETE this note when the P3 code is ready -->
+          <div class="pillars">
+            <h3>What this module must show</h3>
+            <ol>
+              <li>
+                Sliders for $T_s$, $K_p$, $K_i$, $K_d$ and an anti-windup on/off
+                switch.
+              </li>
+              <li>The stair-step control signal $u[k]$ next to the output.</li>
+              <li>
+                How performance falls as $T_s$ grows (overshoot and settling
+                time).
+              </li>
+              <li>
+                The Arduino loop code for the current gains, with a copy button.
+              </li>
+            </ol>
+          </div>
+
+          <div class="container">
+            <div class="plot_p3" id="p3-plot"></div>
+            <div class="output_values">
+              <h3>Values</h3>
+              <ul>
+                <li>Overshoot (%) = <span id="p3-os">–</span></li>
+                <li>Settling time (s) = <span id="p3-ts">–</span></li>
+                <li>Steady-state error = <span id="p3-ess">–</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="plot_p3b" id="p3-perf-plot"></div>
+
+          <div class="sliders">
+            <label for="p3-ts-slider"
+              >Sampling time Ts (s): <output id="p3-ts-val">0.05</output></label
+            >
+            <input
+              type="range"
+              id="p3-ts-slider"
+              min="0.005"
+              max="0.5"
+              step="0.005"
+              value="0.05"
+            />
+
+            <label for="p3-kp">Kp: <output id="p3-kp-val">1.0</output></label>
+            <input
+              type="range"
+              id="p3-kp"
+              min="0"
+              max="50"
+              step="0.1"
+              value="1"
+            />
+
+            <label for="p3-ki">Ki: <output id="p3-ki-val">0.0</output></label>
+            <input
+              type="range"
+              id="p3-ki"
+              min="0"
+              max="20"
+              step="0.1"
+              value="0"
+            />
+
+            <label for="p3-kd">Kd: <output id="p3-kd-val">0.0</output></label>
+            <input
+              type="range"
+              id="p3-kd"
+              min="0"
+              max="10"
+              step="0.1"
+              value="0"
+            />
+            <br />
+            <label for="p3-aw"
+              ><input id="p3-aw" type="checkbox" checked />Anti-windup on</label
+            >
+          </div>
+
+          <h3>Arduino code for these gains</h3>
+          <pre class="code" id="p3-code">
+// the generated code will appear here</pre
+          >
+          <button type="button" id="p3-copy">Copy code</button>
+          <p><a href="#top" class="back">↑ Back to modules</a></p>
+        </section>
+
+        <!------------------------------------ HW2 P4: TUNING CHALLENGE ------------------------------------->
+        <section id="p4">
+          <h2>P4: Tuning Challenge</h2>
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> a plant has a steady-state
+              error. Which gain do you raise to remove it completely: $K_p$,
+              $K_i$ or $K_d$?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                $K_i$. The integral term keeps adding up the error until it is
+                zero, so any PI controller has zero steady-state error for a
+                step. Raising $K_p$ only shrinks the error ($K_p = 9$ on the
+                first-order plant still leaves 10%).
+              </p>
+            </details>
+          </div>
+
+          <div class="container">
+            <div class="plot_p4" id="p4-plot"></div>
+            <div class="output_values">
+              <h3>Spec to meet</h3>
+              <ul id="p4-specs-list"></ul>
+              <h3>Your result</h3>
+              <ul>
+                <li>Rise time (s) = <span id="p4-tr">–</span></li>
+                <li>Overshoot (%) = <span id="p4-os">–</span></li>
+                <li>Settling time (s) = <span id="p4-ts">–</span></li>
+                <li>Steady-state error = <span id="p4-ess">–</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="sliders">
+            <label for="p4-kp">Kp</label>
+            <input
+              type="number"
+              id="p4-kp"
+              value="1"
+              min="0"
+              max="300"
+              step="0.1"
+            /><br />
+            <label for="p4-ki">Ki</label>
+            <input
+              type="number"
+              id="p4-ki"
+              value="0"
+              min="0"
+              max="300"
+              step="0.1"
+            /><br />
+            <label for="p4-kd">Kd</label>
+            <input
+              type="number"
+              id="p4-kd"
+              value="0"
+              min="0"
+              max="300"
+              step="0.1"
+            />
+          </div>
+          <button type="button" id="p4-test-btn">Test my gains</button>
+          <button type="button" id="p4-new-btn">New challenge</button>
+
+          <p class="status" id="p4-status">Waiting for your test...</p>
+          <ul id="p4-checks"></ul>
+
+          <p class="score">Session score: <span id="p4-score">0</span></p>
+
+          <details class="hint">
+            <summary>Hint</summary>
+            <p>
+              Start with P only. Then add I to remove the steady-state error.
+              Then add D to calm the overshoot.
+            </p>
+            <p>
+              Second-order plants often need big gains (Kp above 50 and Kd above
+              10).
+            </p>
+          </details>
+          <p><a href="#top" class="back">↑ Back to modules</a></p>
+        </section>
+
+        <!------------------------------------ HW2 MY SYSTEM (skeleton) ------------------------------------->
+        <section id="my_sys">
+          <h2>My System: PID for our project</h2>
+
+          <!-- DELETE this note when the page is ready -->
+          <div class="pillars">
+            <h3>What this page must show</h3>
+            <ol>
+              <li>
+                The plant model and where $K$ and $\tau$ came from (for a
+                micromouse: the drive motor, from a PWM step test logged with
+                the encoder; otherwise a measurement or a cited datasheet).
+              </li>
+              <li>
+                The spec we chose and why it matters (for a micromouse: $0.6 \le
+                \zeta \le 0.8$, and a PWM command that stays within 0 to 100%).
+              </li>
+              <li>
+                Our final gains, the simulated response and the generated
+                Arduino code.
+              </li>
+            </ol>
+          </div>
+
+          <div class="container">
+            <div class="plot_my" id="my-plot"></div>
+            <div class="output_values">
+              <h3>Our plant</h3>
+              <ul>
+                <li>K = <span id="my-k">–</span></li>
+                <li>τ (s) = <span id="my-tau">–</span></li>
+                <li>Source = <span id="my-source">–</span></li>
+              </ul>
+              <h3>Our gains</h3>
+              <ul>
+                <li>Kp = <span id="my-kp">–</span></li>
+                <li>Ki = <span id="my-ki">–</span></li>
+                <li>Kd = <span id="my-kd">–</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>Arduino code</h3>
+          <pre class="code" id="my-code">
+// the generated code will appear here</pre
+          >
+          <p><a href="#top" class="back">↑ Back to modules</a></p>
+        </section>
+
+        <!------------------------------------ HW2 VALIDATION ------------------------------------->
+        <section id="valid_hw2">
+          <h2>Validation checks (HW2)</h2>
+          <p>
+            Plant K/(τs + 1) with K = 1 and τ = 1 s. Each result is compared
+            with the expected value from the homework.
+          </p>
+          <div class="table_wrap">
+            <table class="validation_table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Check</th>
+                  <th>Expected</th>
+                  <th>Your value</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>P only, Kp = 9</td>
+                  <td>closed-loop τ = 0.1 s, steady-state error = 10%</td>
+                  <td id="h2v1_mine">–</td>
+                  <td id="h2v1_res">–</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>PI, Kp = 1 and Ki = 1</td>
+                  <td>ωn = 1 rad/s and ζ = 1</td>
+                  <td id="h2v2_mine">–</td>
+                  <td id="h2v2_res">–</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Any PI controller, step input</td>
+                  <td>zero steady-state error</td>
+                  <td id="h2v3_mine">–</td>
+                  <td id="h2v3_res">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p><a class="back" href="#top">↑ Back to modules</a></p>
+        </section>
+      </div>
+      <!-- ============================ END HOMEWORK 2 ============================ -->
+    </main>
 
     <footer class="page_footer">
-      <p>ENCS4380 Interfacing Techniques, Homework 1</p>
-      <p>Names: Omayma, Beesan, Sarah</p>
+      <p>ENCS4380 Interfacing Techniques, Homework 1 and Homework 2</p>
+      <p>Names: Omayma Altaweel, Beesan Abutouq, Sarah Abd Al-Muhsen</p>
     </footer>
+
+    <!-- closes the menu after a link is clicked (the only plain JavaScript on the page) -->
+    <script>
+      document.querySelectorAll(".sidebar a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          document.getElementById("menu_toggle").checked = false;
+        });
+      });
+    </script>
+
     <!-------------------------------------- PYTHON STARTS----------------------------------------------->
-    <py-config>
-      packages = ["numpy", "matplotlib"]
-      
-      [[fetch]]
-      files = ["./module1.py", "./module2.py", "./module3.py"]
-    </py-config>
-    <script type="py" src="./module1.py"></script>
-    <script type="py" src="./module2.py"></script>
-    <script type="py" src="./module3.py"></script>
-    <script type="py" src="./module4.py"></script>
-    <script type="py" src="./validation.py"></script>
-  </body>
-</html>
+    <script type="py" src="./HW1/module1.py"></script>
+    <script type="py" src="./HW1/module2.py"></script>
+    <script type="py" src="./HW1/module3.py"></script>
+    <script type="py" src="./HW1/module4.py"></script>
+    <script type="py" src="./HW1/validation.py"></script>
 
-
-
+    <script type="py" src="./HW2/pid_p1.py"></script>
+    <script type="py" src="./HW2/pid_p2.py"></script>
+    <script type="py" src="./HW2/pid_p3.py"></script>
+    <script type="py" src="./HW2/pid_p4.py"></script>
+    <script type="py" src="./HW2/pid_validation.py"></script>
     <!-------------------------------------- PYTHON ENDS----------------------------------------------->
   </body>
 </html>

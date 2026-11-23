@@ -57,4 +57,60 @@ def simulate_pid_sensor(plant_type, plant_params, Kp, Ki, Kd, tau_s, setpoint=1.
 
     return t, r, y, ys,u
     
-#def simulate_pid_digital():
+def simulate_pid_digital(plant_type, plant_params, Kp, Ki, Kd, Ts,
+                         anti_windup=True, setpoint=1.0, u_min=-10.0,
+                         u_max=10.0, dt=0.005, t_end=10.0):
+    x1, x2 = 0.0, 0.0
+    integral = 0.0
+    prev_error = 0.0
+    u_hold = 0.0
+
+    t = np.arange(0, t_end + dt, dt)
+    n = len(t)
+    y = np.zeros(n)
+    u = np.zeros(n)
+    r = np.full(n, setpoint)
+    steps_per_sample = max(1, round(Ts / dt))
+    Ts_eff = steps_per_sample * dt
+
+    for i in range(n):
+        y[i] = x1
+
+        if i % steps_per_sample == 0:
+            error = r[i] - y[i]
+            integral_new = integral + error * Ts_eff
+            derivative = (error - prev_error) / Ts_eff if i > 0 else 0.0
+
+            u_raw = Kp * error + Ki * integral_new + Kd * derivative
+            u_sat = np.clip(u_raw, u_min, u_max)
+
+            if (not anti_windup) or (u_raw == u_sat):
+                integral = integral_new
+
+            u_hold = u_sat
+            prev_error = error
+
+        u[i] = u_hold
+
+        if i < n - 1:
+            if plant_type == "first_order":
+                K, tau = plant_params["K"], plant_params["tau"]
+                f = lambda val: (K * u_hold - val) / tau
+                k1 = f(x1)
+                k2 = f(x1 + 0.5 * dt * k1)
+                k3 = f(x1 + 0.5 * dt * k2)
+                k4 = f(x1 + dt * k3)
+                x1 += (dt / 6.0) * (k1 + 2*k2 + 2*k3 + k4)
+
+            elif plant_type == "second_order":
+                m, b, k = plant_params["m"], plant_params["b"], plant_params["k"]
+                def f2(s1, s2):
+                    return s2, (u_hold - b * s2 - k * s1) / m
+                k1_1, k1_2 = f2(x1, x2)
+                k2_1, k2_2 = f2(x1 + 0.5*dt*k1_1, x2 + 0.5*dt*k1_2)
+                k3_1, k3_2 = f2(x1 + 0.5*dt*k2_1, x2 + 0.5*dt*k2_2)
+                k4_1, k4_2 = f2(x1 + dt*k3_1, x2 + dt*k3_2)
+                x1 += (dt / 6.0) * (k1_1 + 2*k2_1 + 2*k3_1 + k4_1)
+                x2 += (dt / 6.0) * (k1_2 + 2*k2_2 + 2*k3_2 + k4_2)
+
+    return t, r, y, u

@@ -1200,10 +1200,93 @@ id    for connecting Python
             </div>
           </div>
 
+                    <!-- ===== Partner 3 additions ===== -->
+          <div class="output_values">
+            <h3>Design results</h3>
+            <ul>
+              <li>ωn = <span id="ms-wn">–</span> rad/s</li>
+              <li>ζ (actual) = <span id="ms-zeta-out">–</span></li>
+              <li>PWM demanded at the step (%) = <span id="ms-u0">–</span></li>
+              <li>Rise time (s) = <span id="ms-tr">–</span></li>
+              <li>Overshoot (%) = <span id="ms-os">–</span></li>
+              <li>Settling time (s) = <span id="ms-ts">–</span></li>
+              <li>Steady-state error (mm/s) = <span id="ms-ess">–</span></li>
+            </ul>
+          </div>
+
+          <div class="sliders">
+            <h3>Plant and design inputs</h3>
+            <label for="ms-k">K (mm/s per 1 % PWM)</label>
+            <input type="number" id="ms-k" value="2" min="0.01" step="0.01" /><br />
+            <label for="ms-tau">τ (s)</label>
+            <input type="number" id="ms-tau" value="0.1" min="0.001" step="0.005" /><br />
+            <label for="ms-r">Speed setpoint r (mm/s)</label>
+            <input type="number" id="ms-r" value="40" min="1" step="1" /><br />
+            <label for="ms-zeta">Design ζ (0.6 to 0.8)</label>
+            <input type="number" id="ms-zeta" value="0.75" min="0.1" max="2" step="0.01" /><br />
+            <label for="ms-tdes">Design settling time (s)</label>
+            <input type="number" id="ms-tdes" value="0.25" min="0.05" step="0.01" /><br />
+            <label for="ms-source-in">Source of K and τ</label>
+            <input type="text" id="ms-source-in" value="ASSUMED (no encoder step test yet)" />
+          </div>
+
+          <p class="status" id="ms-status"></p>
+          <ul id="ms-checks"></ul>
+
+          <h3>Spec and why it matters</h3>
+          <div class="table_wrap">
+            <table class="validation_table">
+              <thead>
+                <tr><th>Requirement</th><th>Limit</th><th>Why it matters for our robot</th></tr>
+              </thead>
+              <tbody id="ms-spec-body"></tbody>
+            </table>
+          </div>
+
+          <h3>How the gains are calculated</h3>
+          <p>
+            For $G(s) = K/(\tau s + 1)$ with a PI controller, the closed-loop
+            characteristic equation is
+            $\tau s^2 + (1 + K K_p)s + K K_i = 0$, so
+            $\omega_n = \sqrt{K K_i/\tau}$ and
+            $\zeta = (1 + K K_p) / (2\sqrt{\tau K K_i})$.
+            We choose $\zeta$ and the settling time ($T_s \approx 4/(\zeta\omega_n)$),
+            then solve $K_i = \tau\omega_n^2/K$ and
+            $K_p = (2\zeta\omega_n\tau - 1)/K$. $K_d = 0$ because the encoder
+            speed is noisy and the derivative term amplifies noise.
+          </p>
+
           <h3>Arduino code</h3>
           <pre class="code" id="my-code">
 // the generated code will appear here</pre
           >
+          <button type="button" id="ms-copy-btn">Copy code</button>
+
+          <div class="predict">
+            <p>
+              <strong>Predict, then check:</strong> the setpoint is raised until
+              the PWM demanded at the step passes 100%. What happens to the
+              response?
+            </p>
+            <textarea placeholder="write your prediction here"></textarea>
+            <details>
+              <summary><strong>Check</strong></summary>
+              <p>
+                The PWM clips at 100%, so the motor gets less push than the
+                controller asked for and the response slows down. The line
+                "PWM within 0-100 %" turns to FAIL. Anti-windup stops the
+                integral from growing while the output is clipped.
+              </p>
+            </details>
+          </div>
+
+          <h3>Limitations</h3>
+          <ul>
+            <li>Linear model: the real motor has a dead zone, friction, and a speed that drops with the battery voltage.</li>
+            <li>Both wheels are treated as one identical motor; left and right will differ.</li>
+            <li>The simulation is continuous; the real loop runs at a fixed sample time (see P3).</li>
+            <li>K and τ stay assumed until the encoder step test is done.</li>
+          </ul>
           <p><a href="#top" class="back">↑ Back to modules</a></p>
         </section>
 
@@ -1295,6 +1378,7 @@ id    for connecting Python
     <script type="py" src="./HW2/pid_p2.py"></script>
     <script type="py" src="./HW2/pid_p3.py"></script>
     <script type="py" src="./HW2/pid_p4.py"></script>
+    <script type="py" src="./HW2/pid_my_system.py"></script>
     
 <!-- ============================ MY SYSTEM ============================ -->
 <section class="my-system-section" id="my_sys">
